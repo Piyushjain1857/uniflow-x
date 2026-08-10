@@ -14,8 +14,12 @@ import Dashboard from './pages/Dashboard';
 import Academics from './pages/Academics';
 import Attendance from './pages/Attendance';
 import Assignments from './pages/Assignments';
+import Exams from './pages/Exams';
 import Timetable from './pages/Timetable';
 import Campus from './pages/Campus';
+import Events from './pages/Events';
+import Clubs from './pages/Clubs';
+import CampusMap from './pages/CampusMap';
 import UniAI from './pages/UniAI';
 import Notifications from './pages/Notifications';
 import PlaceholderPage from './pages/PlaceholderPage';
@@ -43,14 +47,14 @@ function App() {
             <Route path="academics" element={<Academics />} />
             <Route path="attendance" element={<Attendance />} />
             <Route path="assignments" element={<Assignments />} />
-            <Route path="exams" element={<PlaceholderPage routePath="/exams" />} />
+            <Route path="exams" element={<Exams />} />
             <Route path="timetable" element={<Timetable />} />
             <Route path="calendar" element={<PlaceholderPage routePath="/calendar" />} />
             
             <Route path="campus" element={<Campus />} />
-            <Route path="events" element={<Campus />} />
-            <Route path="clubs" element={<Campus />} />
-            <Route path="campus-map" element={<Campus />} />
+            <Route path="events" element={<Events />} />
+            <Route path="clubs" element={<Clubs />} />
+            <Route path="campus-map" element={<CampusMap />} />
             <Route path="complaints" element={<Campus />} />
             
             <Route path="uni-ai" element={<UniAI />} />

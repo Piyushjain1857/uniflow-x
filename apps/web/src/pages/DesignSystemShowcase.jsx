@@ -18,14 +18,10 @@ import {
   Alert,
   Skeleton,
   Progress,
-  EmptyState,
-  ErrorState,
-  LoadingState,
   StatCard,
   Timeline,
   DataTable,
 } from '../components/ui';
-import Icon from '../components/Icon';
 
 export function DesignSystemShowcase() {
   const [theme, setTheme] = useState('dark');
@@ -75,15 +71,15 @@ export function DesignSystemShowcase() {
   ];
 
   return (
-    <div className="showcase-page" style={{ padding: '2rem 1.5rem', maxWidth: '1280px', margin: '0 auto' }}>
+    <div className="showcase-page" style={{ padding: '48px 48px 96px', maxWidth: '1400px', margin: '0 auto' }}>
       {/* Header & Theme Control */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
         <div>
           <Badge variant="primary" size="md">Design Tokens & Component Kit</Badge>
-          <h1 style={{ fontSize: '2.2rem', fontWeight: 800, marginTop: '0.4rem' }}>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 900, marginTop: '0.6rem', letterSpacing: '-0.035em' }}>
             UniFlow X Web Design System
           </h1>
-          <p style={{ color: 'var(--text-muted)' }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginTop: '4px' }}>
             24 Reusable, Accessible, Keyboard-Friendly React UI Components
           </p>
         </div>
@@ -108,15 +104,15 @@ export function DesignSystemShowcase() {
           { id: 'overlays', label: 'Overlays & Dialogs', icon: 'settings' },
           { id: 'data', label: 'Data & Analytics', icon: 'dashboard' },
         ]}
-        style={{ marginBottom: '2rem' }}
+        style={{ marginBottom: '2.5rem' }}
       />
 
       {/* 1. Buttons & Badges */}
       {(activeTab === 'overview' || activeTab === 'forms') && (
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '1rem' }}>1. Buttons & Badges</h2>
+        <section style={{ marginBottom: '3.5rem' }}>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text)' }}>1. Buttons & Badges</h2>
           <Card>
-            <CardContent style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <CardContent style={{ display: 'flex', flexDirection: 'column', gap: '2rem', padding: '8px' }}>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
                 <Button variant="primary" icon="sparkles">Primary Button</Button>
                 <Button variant="secondary">Secondary</Button>
@@ -128,7 +124,7 @@ export function DesignSystemShowcase() {
                 <Button variant="primary" isDisabled>Disabled</Button>
               </div>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem', alignItems: 'center' }}>
                 <Badge variant="primary" hasDot>Primary Badge</Badge>
                 <Badge variant="secondary">Secondary</Badge>
                 <Badge variant="success" hasDot>Success</Badge>
@@ -137,7 +133,7 @@ export function DesignSystemShowcase() {
                 <Badge variant="info">Info Badge</Badge>
               </div>
 
-              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
                 <Avatar name="Alex Vance" size="sm" status="online" />
                 <Avatar name="Sarah Jenkins" size="md" status="online" />
                 <Avatar name="Mark Davis" size="lg" status="away" />
@@ -150,10 +146,10 @@ export function DesignSystemShowcase() {
 
       {/* 2. Inputs & Form Controls */}
       {(activeTab === 'overview' || activeTab === 'forms') && (
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '1rem' }}>2. Form Controls & Inputs</h2>
+        <section style={{ marginBottom: '3.5rem' }}>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text)' }}>2. Form Controls & Inputs</h2>
           <Card>
-            <CardContent style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+            <CardContent style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', padding: '8px' }}>
               <Input
                 label="University Email"
                 placeholder="netid@university.edu"
@@ -203,10 +199,10 @@ export function DesignSystemShowcase() {
 
       {/* 3. Overlays & Dialogs */}
       {(activeTab === 'overview' || activeTab === 'overlays') && (
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '1rem' }}>3. Overlays, Dialogs & Popovers</h2>
+        <section style={{ marginBottom: '3.5rem' }}>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text)' }}>3. Overlays, Dialogs & Popovers</h2>
           <Card>
-            <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+            <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem', padding: '8px' }}>
               <Button variant="primary" onClick={() => setIsModalOpen(true)}>
                 Open Modal Dialog
               </Button>
@@ -253,7 +249,7 @@ export function DesignSystemShowcase() {
           </>
         }
       >
-        <p style={{ color: 'var(--text-muted)' }}>
+        <p style={{ color: 'var(--text-secondary)' }}>
           This is an accessible modal dialog with backdrop blur, Esc key handling, and focus trapping.
         </p>
       </Modal>
@@ -265,7 +261,7 @@ export function DesignSystemShowcase() {
         title="Side Navigation Drawer"
         position="right"
       >
-        <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
           Slide-out panel for navigation or detailed item inspection.
         </p>
         <Alert variant="info" title="Drawer Tip">
@@ -275,8 +271,8 @@ export function DesignSystemShowcase() {
 
       {/* 4. Feedback & States */}
       {(activeTab === 'overview' || activeTab === 'data') && (
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '1rem' }}>4. Feedback & State Components</h2>
+        <section style={{ marginBottom: '3.5rem' }}>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text)' }}>4. Feedback & State Components</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
             <Alert variant="info" title="System Announcement">
               Fall 2026 course registration closes on Friday.
@@ -287,12 +283,12 @@ export function DesignSystemShowcase() {
           </div>
 
           <Card style={{ marginTop: '1.5rem' }}>
-            <CardContent style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <CardContent style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', padding: '8px' }}>
               <Progress value={75} max={100} label="Semester Progress" showValue variant="primary" />
               <Progress value={92} max={100} label="Attendance Threshold" showValue variant="success" />
 
               <div style={{ marginTop: '1rem' }}>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Loading Skeletons:</p>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', fontWeight: 700 }}>Loading Skeletons:</p>
                 <Skeleton variant="text" width="60%" />
                 <Skeleton variant="rect" height="60px" style={{ marginTop: '6px' }} />
               </div>
@@ -303,9 +299,9 @@ export function DesignSystemShowcase() {
 
       {/* 5. Data & Analytics */}
       {(activeTab === 'overview' || activeTab === 'data') && (
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '1rem' }}>5. Analytics & Data Tables</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '1.5rem' }}>
+        <section style={{ marginBottom: '3.5rem' }}>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text)' }}>5. Analytics & Data Tables</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
             <StatCard label="Total Enrolled" value="15,420" change="+4.2% vs last term" changeType="positive" icon="profile" color="primary" />
             <StatCard label="Attendance Rate" value="92.4%" change="Safe Status" changeType="positive" icon="attendance" color="emerald" />
             <StatCard label="Open Tickets" value="12 Tasks" change="-3 resolved today" changeType="positive" icon="complaints" color="amber" />
