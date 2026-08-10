@@ -1,89 +1,81 @@
 import React from 'react';
 import PageContainer from '../components/PageContainer';
-import { Card, CardHeader, CardTitle, CardContent, Badge, DataTable } from '../components/ui';
 import { mockData } from '../data/mockData';
 
 export function Academics() {
-  const { student, academicsSubjects } = mockData;
-
-  const columns = [
-    { key: 'code', title: 'Code', sortable: true, width: '100px' },
-    { key: 'name', title: 'Subject', sortable: true },
-    { key: 'faculty', title: 'Faculty Instructor', sortable: true },
-    { key: 'credits', title: 'Credits', sortable: true, width: '80px' },
-    {
-      key: 'attendance',
-      title: 'Attendance',
-      render: (val) => (
-        <Badge variant={parseInt(val) >= 80 ? 'primary' : 'warning'} size="sm">
-          {val}
-        </Badge>
-      ),
-    },
-    { key: 'nextClass', title: 'Next Scheduled Lecture' },
-  ];
+  const { student, academicsRoster } = mockData;
 
   return (
-    <PageContainer className="academics-page">
-      <div className="page-header-block">
-        <h1 className="page-title">Academic Overview</h1>
-        <p className="page-subtitle">{student.program} • {student.currentSemester}</p>
+    <PageContainer className="v2-academics-page">
+      <div className="v2-page-header">
+        <h1 className="v2-title">Academics</h1>
+        <p className="v2-subtitle">Your academic overview.</p>
       </div>
 
-      {/* Top 4 Summary Cards */}
-      <div className="academics-stats-grid">
-        <Card className="ac-stat-card">
-          <span className="stat-label">Current Semester</span>
-          <div className="stat-val">{student.semester}</div>
-          <span className="stat-sub">Spring Term 2026</span>
-        </Card>
-
-        <Card className="ac-stat-card">
-          <span className="stat-label">Completed Credits</span>
-          <div className="stat-val">{student.totalCredits} Credits</div>
-          <span className="stat-sub">GPA: {student.overallGpa}</span>
-        </Card>
-
-        <Card className="ac-stat-card">
-          <span className="stat-label">Active Subjects</span>
-          <div className="stat-val">4 Subjects</div>
-          <span className="stat-sub">2 Labs • 2 Theory</span>
-        </Card>
-
-        <Card className="ac-stat-card">
-          <span className="stat-label">Overall Attendance</span>
-          <div className="stat-val" style={{ color: 'var(--color-primary)' }}>{student.attendance ? '82%' : '82%'}</div>
-          <span className="stat-sub">Satisfactory Standing</span>
-        </Card>
-      </div>
-
-      {/* Subject Roster Table (Desktop) & Cards (Mobile) */}
-      <Card style={{ marginTop: '1.5rem' }}>
-        <CardHeader>
-          <CardTitle>Enrolled Subjects & Faculty Roster</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="desktop-only">
-            <DataTable columns={columns} data={academicsSubjects} pageSize={10} />
+      {/* CURRENT SEMESTER SECTION */}
+      <section className="v2-section">
+        <div className="v2-section-header">
+          <h3 className="v2-section-title">CURRENT SEMESTER</h3>
+        </div>
+        <div className="v2-surface-box semester-info-box">
+          <div>
+            <h2 className="sem-program">{student.program}</h2>
+            <p className="sem-number">{student.semester} · Spring 2026</p>
           </div>
+          <div className="sem-gpa-stat">
+            <span className="gpa-lbl">Cumulative GPA</span>
+            <span className="gpa-val">{student.overallGpa} / 4.0</span>
+          </div>
+        </div>
+      </section>
 
-          <div className="mobile-only subject-cards-stack">
-            {academicsSubjects.map((sub) => (
-              <div key={sub.code} className="subject-mobile-card">
-                <div className="card-top-row">
-                  <Badge variant="primary" size="sm">{sub.code}</Badge>
-                  <Badge variant={parseInt(sub.attendance) >= 80 ? 'primary' : 'warning'} size="sm">
-                    {sub.attendance}
-                  </Badge>
-                </div>
-                <h3 className="sub-title">{sub.name}</h3>
-                <p className="sub-faculty">{sub.faculty} • {sub.credits} Credits</p>
-                <p className="sub-next">Next: {sub.nextClass}</p>
+      {/* SUBJECTS REFINED LIST TABLE */}
+      <section className="v2-section">
+        <div className="v2-section-header">
+          <h3 className="v2-section-title">SUBJECT ROSTER</h3>
+        </div>
+
+        <div className="desktop-only">
+          <div className="v2-table-wrapper">
+            <table className="v2-table">
+              <thead>
+                <tr>
+                  <th>Subject</th>
+                  <th>Faculty</th>
+                  <th>Attendance</th>
+                  <th>Next Class</th>
+                  <th>Assignments</th>
+                </tr>
+              </thead>
+              <tbody>
+                {academicsRoster.map((sub, idx) => (
+                  <tr key={idx}>
+                    <td className="font-bold">{sub.subject}</td>
+                    <td>{sub.faculty}</td>
+                    <td><span className="v2-badge-indigo">{sub.attendance}</span></td>
+                    <td>{sub.nextClass}</td>
+                    <td>{sub.assignments}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Mobile Clean List Items */}
+        <div className="mobile-only v2-divider-list">
+          {academicsRoster.map((sub, idx) => (
+            <div key={idx} className="v2-divider-row flex-col align-start">
+              <div className="row-top-line">
+                <h4 className="font-bold">{sub.subject}</h4>
+                <span className="v2-badge-indigo">{sub.attendance}</span>
               </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              <p className="v2-sub-text">{sub.faculty} · Next: {sub.nextClass}</p>
+              <p className="v2-sub-text" style={{ marginTop: '2px', color: 'var(--color-primary)' }}>{sub.assignments}</p>
+            </div>
+          ))}
+        </div>
+      </section>
     </PageContainer>
   );
 }

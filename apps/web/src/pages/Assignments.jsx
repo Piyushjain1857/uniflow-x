@@ -1,118 +1,59 @@
 import React, { useState } from 'react';
 import PageContainer from '../components/PageContainer';
-import { Card, Badge, Tabs, Modal, Button } from '../components/ui';
 import { mockData } from '../data/mockData';
 
 export function Assignments() {
-  const { assignments } = mockData;
-  const [filter, setFilter] = useState('all');
-  const [selectedAssignment, setSelectedAssignment] = useState(null);
+  const { assignmentsList } = mockData;
+  const [filter, setFilter] = useState('Upcoming');
 
-  const filteredAssignments = assignments.filter((item) => {
-    if (filter === 'upcoming') return item.status === 'Upcoming';
-    if (filter === 'submitted') return item.status === 'Submitted';
-    if (filter === 'overdue') return item.status === 'Overdue';
+  const filteredAssignments = assignmentsList.filter((item) => {
+    if (filter === 'Upcoming') return item.status === 'Upcoming';
+    if (filter === 'Submitted') return item.status === 'Submitted';
+    if (filter === 'Overdue') return item.status === 'Overdue';
     return true;
   });
 
   return (
-    <PageContainer className="assignments-page">
-      <div className="page-header-block">
-        <h1 className="page-title">Assignments & Submissions</h1>
-        <p className="page-subtitle">View active coursework tasks, submission deadlines, and evaluation marks</p>
+    <PageContainer className="v2-assignments-page">
+      <div className="v2-page-header">
+        <h1 className="v2-title">Assignments</h1>
+        <p className="v2-subtitle">Coursework tasks and submission deadlines.</p>
       </div>
 
       {/* Filter Tabs */}
-      <Tabs
-        variant="pill"
-        activeTab={filter}
-        onChange={setFilter}
-        items={[
-          { id: 'all', label: 'All Tasks' },
-          { id: 'upcoming', label: 'Upcoming', badge: '2' },
-          { id: 'submitted', label: 'Submitted', badge: '1' },
-          { id: 'overdue', label: 'Overdue', badge: '1' },
-        ]}
-        style={{ marginBottom: '1.5rem' }}
-      />
-
-      {/* Assignments Cards Grid */}
-      <div className="assignments-cards-grid">
-        {filteredAssignments.map((item) => (
-          <Card
-            key={item.id}
-            isHoverable
-            isClickable
-            onClick={() => setSelectedAssignment(item)}
-            className="assignment-item-card"
+      <div className="v2-filter-tabs">
+        {['Upcoming', 'Submitted', 'Overdue'].map((tab) => (
+          <button
+            key={tab}
+            className={`v2-tab-btn ${filter === tab ? 'active' : ''}`}
+            onClick={() => setFilter(tab)}
           >
-            <div className="card-top">
-              <span className="code-pill">{item.code} • {item.subject}</span>
-              <Badge
-                variant={
-                  item.status === 'Submitted'
-                    ? 'success'
-                    : item.status === 'Overdue'
-                    ? 'warning'
-                    : 'danger'
-                }
-                size="sm"
-              >
-                {item.status}
-              </Badge>
-            </div>
-
-            <h3 className="item-title">{item.title}</h3>
-            <p className="item-desc">{item.description}</p>
-
-            <div className="card-bottom">
-              <span className="deadline-text">📅 {item.deadline}</span>
-              <span className="marks-badge">{item.score || item.marks}</span>
-            </div>
-          </Card>
+            {tab}
+          </button>
         ))}
       </div>
 
-      {/* Premium Assignment Detail Modal */}
-      {selectedAssignment && (
-        <Modal
-          isOpen={!!selectedAssignment}
-          onClose={() => setSelectedAssignment(null)}
-          title={`Assignment Detail — ${selectedAssignment.code}`}
-          footer={
-            <>
-              <Button variant="secondary" onClick={() => setSelectedAssignment(null)}>Close</Button>
-              {selectedAssignment.status !== 'Submitted' && (
-                <Button variant="primary" icon="sparkles" onClick={() => { alert('Submission Portal Sim Triggered!'); setSelectedAssignment(null); }}>
-                  Upload Submission PDF
-                </Button>
-              )}
-            </>
-          }
-        >
-          <div className="assignment-detail-modal-body">
-            <div className="detail-header-row">
-              <Badge variant="primary" size="md">{selectedAssignment.code}</Badge>
-              <Badge variant={selectedAssignment.status === 'Submitted' ? 'success' : 'danger'} size="md">
-                {selectedAssignment.status}
-              </Badge>
-            </div>
+      {/* Dividers List */}
+      <section className="v2-section">
+        <div className="v2-divider-list">
+          {filteredAssignments.map((asg) => (
+            <div key={asg.id} className="v2-divider-row assignment-row">
+              <div className="asg-info-col">
+                <span className="v2-subject-tag">{asg.subject}</span>
+                <h3 className="v2-asg-title">{asg.title}</h3>
+                <span className="v2-asg-date">{asg.dueDate}</span>
+              </div>
 
-            <h2 className="detail-title">{selectedAssignment.title}</h2>
-            <p className="detail-sub">{selectedAssignment.subject}</p>
-
-            <div className="detail-meta-box">
-              <div><strong>Deadline:</strong> {selectedAssignment.deadline}</div>
-              <div><strong>Evaluation Marks:</strong> {selectedAssignment.score || selectedAssignment.marks}</div>
+              <div className="asg-right-col">
+                <span className="v2-marks-pill">{asg.marks}</span>
+                <span className={`v2-status-tag status-${asg.status.toLowerCase()}`}>
+                  {asg.status}
+                </span>
+              </div>
             </div>
-
-            <div className="detail-desc-box">
-              <h4>Instructions & Prompt:</h4>
-              <p>{selectedAssignment.description}</p>
-            </div>
-          </div>
-        </Modal>
-      )}
+          ))}
+        </div>
+      </section>
     </PageContainer>
   );
 }

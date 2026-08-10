@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Icon from '../../components/Icon';
-import { Input, Button, Checkbox } from '../../components/ui';
 
 export function Login() {
   const [email, setEmail] = useState('piyush.jain@uniflow.edu');
   const [password, setPassword] = useState('••••••••••••');
-  const [rememberMe, setRememberMe] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(true);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -17,99 +15,102 @@ export function Login() {
     setTimeout(() => {
       setLoading(false);
       navigate('/dashboard');
-    }, 600);
+    }, 400);
   };
 
   return (
-    <div className="login-split-page">
-      {/* Left Branding Side (Desktop) */}
-      <div className="login-branding-panel">
-        <div className="branding-content">
-          <Link to="/" className="brand-logo-large">
-            <span className="brand-icon-wrap">
-              <Icon name="sparkles" size={24} />
-            </span>
-            <span>UniFlow <span style={{ color: 'var(--color-primary)' }}>X</span></span>
+    <div className="v2-login-page">
+      {/* LEFT 55% BRANDING PANEL */}
+      <div className="login-left-panel desktop-only">
+        <div className="left-content">
+          <Link to="/" className="v2-brand-link">
+            <div className="v2-brand-mark">
+              <Icon name="sparkles" size={16} />
+            </div>
+            <div className="v2-brand-text">
+              <span className="brand-uniflow">UNIFLOW</span>
+              <span className="brand-x">X</span>
+            </div>
           </Link>
 
-          <h2 className="branding-title">Your University. <br />One Intelligent OS.</h2>
-          <p className="branding-subtext">
-            A unified digital operating system connecting academics, smart attendance, campus life, services, and AI-assisted governance.
+          <h1 className="left-headline">
+            Your university. <br />
+            Finally, <br />
+            <span className="text-primary">in one place.</span>
+          </h1>
+
+          <p className="left-subtext">
+            A calm, intelligent platform for academics, campus life, schedules, services, and AI assistance.
           </p>
 
-          <div className="branding-quote">
-            <p>"UniFlow X turned fragmented campus portals into one seamless desktop experience."</p>
-            <span>— Piyush Jain, CS Senior</span>
+          <div className="abstract-shape-container">
+            <div className="shape-circle-gradient" />
+            <div className="shape-ring-lines" />
           </div>
         </div>
       </div>
 
-      {/* Right Login Card Side */}
-      <div className="login-form-panel">
-        <div className="login-card">
-          <div className="login-header">
-            <h1 className="login-title">Sign In to UniFlow X</h1>
-            <p className="login-subtitle">Enter your institutional credentials to access your workspace</p>
+      {/* RIGHT 45% FORM PANEL */}
+      <div className="login-right-panel">
+        <div className="v2-form-surface">
+          <div className="mobile-only v2-brand-link" style={{ marginBottom: '24px' }}>
+            <div className="v2-brand-mark">
+              <Icon name="sparkles" size={16} />
+            </div>
+            <div className="v2-brand-text">
+              <span className="brand-uniflow">UNIFLOW</span>
+              <span className="brand-x">X</span>
+            </div>
           </div>
 
-          <form onSubmit={handleLogin} className="login-form">
-            <Input
-              label="University Email"
-              type="email"
-              placeholder="netid@uniflow.edu"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              startIcon="profile"
-              isRequired
-            />
+          <h2 className="form-title">Sign in</h2>
+          <p className="form-sub">Enter your institutional email to access your workspace</p>
 
-            <div className="password-input-wrap">
-              <Input
-                label="Password"
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Enter password"
+          <form onSubmit={handleLogin} className="v2-login-form">
+            <div className="v2-input-group">
+              <label className="v2-label">Institutional Email</label>
+              <input
+                type="email"
+                placeholder="student@uniflow.edu"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="v2-input"
+                required
+              />
+            </div>
+
+            <div className="v2-input-group">
+              <div className="label-row">
+                <label className="v2-label">Password</label>
+                <Link to="/forgot-password" className="v2-forgot-link">Forgot?</Link>
+              </div>
+              <input
+                type="password"
+                placeholder="••••••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                startIcon="lock"
-                isRequired
+                className="v2-input"
+                required
               />
-              <button
-                type="button"
-                className="show-password-btn"
-                onClick={() => setShowPassword(!showPassword)}
-                title={showPassword ? 'Hide password' : 'Show password'}
-              >
-                <Icon name={showPassword ? 'close' : 'sparkles'} size={14} />
-              </button>
             </div>
 
-            <div className="login-options-row">
-              <Checkbox
-                label="Remember me"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
+            <div className="v2-checkbox-row">
+              <input
+                type="checkbox"
+                id="remember"
+                checked={remember}
+                onChange={(e) => setRemember(e.target.checked)}
               />
-
-              <Link to="/forgot-password" className="forgot-link">
-                Forgot password?
-              </Link>
+              <label htmlFor="remember">Remember me on this browser</label>
             </div>
 
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              isLoading={loading}
-              className="login-submit-btn"
-            >
-              Sign In to Portal
-            </Button>
+            <button type="submit" className="v2-btn-primary full-width" disabled={loading}>
+              {loading ? 'Signing in...' : 'Sign in to workspace'}
+            </button>
 
-            <div className="login-footer">
+            <div className="form-footer">
               <span>Don't have an account? </span>
-              <Link to="/register" className="register-link">
-                Create Account
-              </Link>
+              <Link to="/register" className="v2-forgot-link">Create account</Link>
             </div>
           </form>
         </div>

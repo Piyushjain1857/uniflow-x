@@ -2,20 +2,13 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../components/Icon';
 import PageContainer from '../components/PageContainer';
-import {
-  Card, CardHeader, CardTitle, CardContent,
-  Badge,
-  Button,
-  Progress,
-  Alert,
-} from '../components/ui';
 import { mockData } from '../data/mockData';
 
 export function Dashboard() {
   const [aiQuery, setAiQuery] = useState('');
-  const { student, nextClass, attendance, todayTimeline, attentionItems, upcomingEvents } = mockData;
+  const { student, nextClass, attendance, todayTimeline, attentionRows, upcomingCampusEvents, aiSuggestedPrompts } = mockData;
 
-  const handleAiAsk = (e) => {
+  const handleAiSubmit = (e) => {
     e.preventDefault();
     if (aiQuery.trim()) {
       alert(`UniAI Query: "${aiQuery}"`);
@@ -24,197 +17,169 @@ export function Dashboard() {
   };
 
   return (
-    <PageContainer className="dashboard-page">
-      {/* 1. Top Header */}
-      <div className="dashboard-header-block">
-        <div>
-          <h1 className="dashboard-greeting">{student.greeting}</h1>
-          <p className="dashboard-date-meta">{student.todayFormatted} • {student.currentSemester}</p>
+    <PageContainer className="v2-dashboard-page">
+      {/* 1. Large Typographic Greeting */}
+      <section className="v2-greeting-section">
+        <h1 className="v2-greeting-title">
+          <span className="greeting-muted">{student.greetingMuted}</span> <br />
+          <span className="greeting-bold">{student.greetingBold}</span>
+        </h1>
+        <div className="v2-greeting-meta">
+          <span className="meta-date">{student.dateFormatted}</span>
+          <span className="meta-dot">·</span>
+          <span className="meta-sub">{student.subheading}</span>
         </div>
-        <div className="dashboard-user-badge">
-          <Badge variant="primary" size="md">
-            {student.program} (Sem 4)
-          </Badge>
-        </div>
-      </div>
+      </section>
 
-      {/* 2. NEXT CLASS HERO CARD */}
-      <div className="next-class-card">
-        <div className="next-class-header">
-          <div className="next-class-badge">
-            <span className="pulse-dot green" />
-            <span>NEXT CLASS</span>
+      {/* 2. Asymmetric Hero Section (Next Class + Attendance) */}
+      <section className="v2-hero-grid">
+        {/* Left Hero Box: NEXT CLASS */}
+        <div className="v2-hero-box next-class-hero">
+          <div className="box-header">
+            <span className="box-tag">NEXT CLASS</span>
+            <span className="box-pill-timer">{nextClass.countdown}</span>
           </div>
-          <span className="countdown-pill">{nextClass.countdown}</span>
-        </div>
 
-        <div className="next-class-content">
-          <span className="next-class-code">{nextClass.code}</span>
-          <h2 className="next-class-name">{nextClass.subject}</h2>
-          <div className="next-class-details">
-            <span className="meta-pill"><Icon name="timetable" size={14} /> {nextClass.time}</span>
-            <span className="meta-pill"><Icon name="campusMap" size={14} /> {nextClass.room}</span>
-            <span className="meta-pill"><Icon name="faculty" size={14} /> {nextClass.faculty}</span>
+          <div className="box-body">
+            <h2 className="class-title">{nextClass.subject}</h2>
+            <div className="class-details-row">
+              <span className="detail-item"><Icon name="timetable" size={14} /> {nextClass.time}</span>
+              <span className="detail-item"><Icon name="campusMap" size={14} /> {nextClass.room}</span>
+              <span className="detail-item"><Icon name="faculty" size={14} /> {nextClass.faculty}</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Main Multi-Column Grid */}
-      <div className="dashboard-grid">
-        {/* Left Main Column */}
-        <div className="dashboard-main-col">
+        {/* Right Hero Box: ATTENDANCE */}
+        <div className="v2-hero-box attendance-hero">
+          <div className="box-header">
+            <span className="box-tag">ATTENDANCE</span>
+            <span className="box-status-pill">{attendance.statusText}</span>
+          </div>
 
-          {/* 3. ATTENDANCE OVERVIEW */}
-          <section className="dashboard-section">
-            <div className="section-header">
-              <h3 className="section-title">Attendance Overview</h3>
-              <Link to="/attendance" className="section-link">View Detailed Breakdown →</Link>
+          <div className="box-body">
+            <div className="attendance-number-row">
+              <span className="big-perc">{attendance.overallPercentage}%</span>
+              <span className="class-counts">{attendance.attendedClasses} / {attendance.totalClasses} classes</span>
             </div>
 
-            <Card className="overall-attendance-card">
-              <div className="overall-gauge-row">
-                <div className="gauge-info">
-                  <span className="gauge-label">Overall Attendance</span>
-                  <div className="gauge-value">{attendance.overallPercentage}%</div>
-                  <span className="gauge-status">Status: Satisfactory ({attendance.attendedClasses}/{attendance.totalClasses} Lectures)</span>
-                </div>
-
-                <div className="horizontal-gauge-wrap">
-                  <Progress
-                    value={attendance.overallPercentage}
-                    max={100}
-                    variant={attendance.overallPercentage >= 80 ? 'primary' : 'warning'}
-                    size="lg"
-                  />
-                </div>
-              </div>
-
-              {/* Subject Cards */}
-              <div className="subject-cards-grid">
-                {attendance.subjects.map((sub) => (
-                  <div key={sub.id} className="subject-mini-card">
-                    <div className="subject-top">
-                      <span className="sub-code">{sub.code}</span>
-                      <span className="sub-perc">{sub.percentage}%</span>
-                    </div>
-                    <h4 className="sub-name">{sub.name}</h4>
-                    <p className="sub-classes">{sub.present}/{sub.total} Classes</p>
-                    <Progress value={sub.percentage} max={100} variant={sub.percentage >= 80 ? 'primary' : 'warning'} size="sm" />
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </section>
-
-          {/* 4. TODAY CLASS TIMELINE */}
-          <section className="dashboard-section">
-            <div className="section-header">
-              <h3 className="section-title">TODAY SCHEDULE</h3>
+            <div className="v2-progress-track">
+              <div className="v2-progress-fill" style={{ width: `${attendance.overallPercentage}%` }} />
             </div>
 
-            <Card>
-              <CardContent className="today-timeline-list">
-                {todayTimeline.map((item) => (
-                  <div key={item.id} className={`timeline-row ${item.status === 'up-next' ? 'active-row' : ''}`}>
-                    <div className="time-badge">{item.time}</div>
-                    <div className="row-content">
-                      <h4 className="row-title">{item.subject} ({item.code})</h4>
-                      <p className="row-meta">{item.room} • {item.faculty}</p>
-                    </div>
-                    {item.status === 'up-next' && <Badge variant="primary" size="sm">Up Next</Badge>}
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </section>
+            <p className="v2-attendance-hint">{attendance.missableClassesText}</p>
 
-          {/* 5. NEEDS YOUR ATTENTION */}
-          <section className="dashboard-section">
-            <div className="section-header">
-              <h3 className="section-title">NEEDS YOUR ATTENTION</h3>
-            </div>
+            <Link to="/attendance" className="v2-box-link">
+              View details →
+            </Link>
+          </div>
+        </div>
+      </section>
 
-            <div className="attention-list">
-              {attentionItems.map((item) => (
-                <Alert
-                  key={item.id}
-                  variant={item.variant === 'rose' ? 'danger' : item.variant === 'amber' ? 'warning' : 'info'}
-                  title={item.title}
-                  isDismissible
-                >
-                  {item.description}
-                </Alert>
-              ))}
-            </div>
-          </section>
-
-          {/* 6. UPCOMING EVENTS */}
-          <section className="dashboard-section">
-            <div className="section-header">
-              <h3 className="section-title">UPCOMING EVENTS</h3>
-              <Link to="/events" className="section-link">View All Events →</Link>
-            </div>
-
-            <div className="events-cards-grid">
-              {upcomingEvents.map((ev) => (
-                <Card key={ev.id} isHoverable className="event-card">
-                  <div className="event-card-header">
-                    <Badge variant="secondary" size="sm">{ev.category}</Badge>
-                    <span className="event-date">{ev.date}</span>
-                  </div>
-                  <h4 className="event-title">{ev.title}</h4>
-                  <p className="event-meta"><Icon name="campusMap" size={12} /> {ev.location} • {ev.attendees} Attending</p>
-                </Card>
-              ))}
-            </div>
-          </section>
+      {/* 3. TODAY SECTION (Vertical Timeline) */}
+      <section className="v2-section">
+        <div className="v2-section-header">
+          <h3 className="v2-section-title">TODAY</h3>
         </div>
 
-        {/* Right Column: UniAI Assistant Card */}
-        <div className="dashboard-side-col">
-          {/* 7. UNIAI ASSISTANT CARD */}
-          <Card className="uniai-large-card">
-            <div className="uniai-card-header">
-              <div className="uniai-brand-icon">
-                <Icon name="uniAi" size={22} />
+        <div className="v2-vertical-timeline">
+          {todayTimeline.map((item) => (
+            <div key={item.id} className="timeline-node">
+              <div className="node-time">{item.time}</div>
+              <div className="node-line-col">
+                <div className="node-dot" />
+                <div className="node-line" />
               </div>
-              <div>
-                <h3 className="uniai-card-title">UniAI Assistant</h3>
-                <p className="uniai-card-sub">Your Intelligent OS Copilot</p>
+              <div className="node-content">
+                <h4 className="node-subject">{item.subject}</h4>
+                <p className="node-meta">{item.room} · {item.faculty}</p>
               </div>
             </div>
-
-            <p className="uniai-card-prompt">
-              Ask UniAI anything about your university.
-            </p>
-
-            <form onSubmit={handleAiAsk} className="uniai-ask-form">
-              <div className="uniai-input-wrap">
-                <input
-                  type="text"
-                  placeholder="What do you want to know?"
-                  value={aiQuery}
-                  onChange={(e) => setAiQuery(e.target.value)}
-                  className="uniai-ask-input"
-                />
-              </div>
-              <Button type="submit" variant="primary" size="md" icon="sparkles" className="uniai-ask-btn">
-                Ask UniAI
-              </Button>
-            </form>
-
-            <div className="uniai-quick-prompts">
-              <span className="quick-label">Suggested Queries:</span>
-              <button type="button" onClick={() => setAiQuery('What assignments do I have this week?')} className="uniai-prompt-chip">
-                "What assignments do I have this week?"
-              </button>
-              <button type="button" onClick={() => setAiQuery('Will my attendance drop below 80% if I miss next class?')} className="uniai-prompt-chip">
-                "Will my attendance drop if I miss next class?"
-              </button>
-            </div>
-          </Card>
+          ))}
         </div>
-      </div>
+      </section>
+
+      {/* 4. NEEDS YOUR ATTENTION SECTION */}
+      <section className="v2-section">
+        <div className="v2-section-header">
+          <h3 className="v2-section-title">NEEDS YOUR ATTENTION</h3>
+        </div>
+
+        <div className="v2-divider-list">
+          {attentionRows.map((row) => (
+            <Link key={row.id} to={row.link} className="v2-divider-row">
+              <div className="row-text-wrap">
+                <span className="row-title">{row.title}</span>
+                <span className="row-sub">{row.sub}</span>
+              </div>
+              <span className="row-arrow">→</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* 5. UPCOMING ON CAMPUS SECTION */}
+      <section className="v2-section">
+        <div className="v2-section-header">
+          <h3 className="v2-section-title">UPCOMING ON CAMPUS</h3>
+          <Link to="/events" className="v2-section-link">View all events →</Link>
+        </div>
+
+        <div className="v2-events-grid">
+          {upcomingCampusEvents.map((ev) => (
+            <div key={ev.id} className="v2-event-card">
+              <div className="event-top">
+                <span className="event-cat">{ev.category}</span>
+                <span className="event-date">{ev.date}</span>
+              </div>
+              <h4 className="event-title">{ev.title}</h4>
+              <p className="event-location"><Icon name="campusMap" size={13} /> {ev.location} · {ev.time}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 6. LARGE UNIAI SECTION */}
+      <section className="v2-section">
+        <div className="v2-uniai-hero-block">
+          <div className="uniai-block-header">
+            <div className="uniai-mark">
+              <Icon name="uniAi" size={20} />
+            </div>
+            <div>
+              <h3 className="uniai-block-title">UniAI Assistant</h3>
+              <p className="uniai-block-sub">Ask UniAI anything about your university.</p>
+            </div>
+          </div>
+
+          <form onSubmit={handleAiSubmit} className="uniai-input-form">
+            <input
+              type="text"
+              placeholder="What do you want to know?"
+              value={aiQuery}
+              onChange={(e) => setAiQuery(e.target.value)}
+              className="uniai-large-input"
+            />
+            <button type="submit" className="uniai-submit-btn">
+              Ask UniAI
+            </button>
+          </form>
+
+          <div className="uniai-chips-row">
+            <span className="chips-label">Suggested:</span>
+            {aiSuggestedPrompts.map((prompt, idx) => (
+              <button
+                key={idx}
+                type="button"
+                className="prompt-chip-btn"
+                onClick={() => setAiQuery(prompt)}
+              >
+                {prompt}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
     </PageContainer>
   );
 }

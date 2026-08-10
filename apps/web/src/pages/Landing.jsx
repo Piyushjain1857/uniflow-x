@@ -4,127 +4,126 @@ import Icon from '../components/Icon';
 import { mockData } from '../data/mockData';
 
 export function Landing() {
-  const { student, attendance, nextClass } = mockData;
+  const { student, nextClass, attendance } = mockData;
 
   return (
-    <div className="landing-container">
+    <div className="v2-landing-page">
       {/* Top Navbar */}
-      <nav className="landing-nav">
-        <div className="brand-logo">
-          <span className="brand-icon-wrap">
-            <Icon name="sparkles" size={18} />
-          </span>
-          <span>UniFlow <span style={{ color: 'var(--color-primary)' }}>X</span></span>
+      <header className="v2-landing-nav">
+        <div className="v2-brand-link">
+          <div className="v2-brand-mark">
+            <Icon name="sparkles" size={16} />
+          </div>
+          <div className="v2-brand-text">
+            <span className="brand-uniflow">UNIFLOW</span>
+            <span className="brand-x">X</span>
+          </div>
         </div>
 
-        <div className="nav-links">
-          <Link to="/dashboard" className="nav-item">Product Tour</Link>
-          <Link to="/academics" className="nav-item">Academics</Link>
-          <Link to="/uni-ai" className="nav-item">UniAI Studio</Link>
-          <Link to="/login" className="ui-btn ui-btn-primary ui-btn-sm">
-            Sign In
-          </Link>
-        </div>
-      </nav>
+        <nav className="landing-links desktop-only">
+          <Link to="/dashboard" className="link-item">Product</Link>
+          <Link to="/academics" className="link-item">Academics</Link>
+          <Link to="/uni-ai" className="link-item">UniAI</Link>
+          <Link to="/login" className="v2-btn-primary sm-btn">Sign in</Link>
+        </nav>
+      </header>
 
       {/* Hero Section */}
-      <section className="landing-hero">
-        <div className="hero-pill-badge">
-          <Icon name="sparkles" size={14} />
-          <span>Next-Generation University Platform</span>
-        </div>
+      <section className="v2-landing-hero">
+        <span className="hero-pill-tag">
+          <Icon name="sparkles" size={12} /> Modern University Operating System
+        </span>
 
-        <h1 className="hero-heading">
-          Your University. <br />
-          <span className="text-primary-gradient">One Intelligent OS.</span>
+        <h1 className="hero-v2-title">
+          UNIFLOW X <br />
+          <span className="text-muted">Your University.</span> <br />
+          One Intelligent OS.
         </h1>
 
-        <p className="hero-subtext">
-          A unified digital platform connecting academics, campus life, communication, services, and intelligent assistance.
+        <p className="hero-v2-sub">
+          A unified platform for academics, campus life, communication, services and intelligent assistance.
         </p>
 
-        <div className="hero-cta-row">
-          <Link to="/login" className="ui-btn ui-btn-primary ui-btn-lg">
-            <span>Get Started</span>
-            <Icon name="arrowRight" size={18} />
-          </Link>
-          <Link to="/dashboard" className="ui-btn ui-btn-secondary ui-btn-lg">
-            <span>Explore UniFlow</span>
-          </Link>
+        <div className="hero-btn-group">
+          <Link to="/login" className="v2-btn-primary lg-btn">Get Started</Link>
+          <Link to="/dashboard" className="v2-btn-secondary lg-btn">Explore platform</Link>
         </div>
 
-        {/* Realistic Interactive Product Preview Window */}
-        <div className="product-preview-frame">
-          <div className="preview-window-bar">
+        {/* Dashboard Realistic Product Preview Frame */}
+        <div className="v2-preview-frame">
+          <div className="preview-top-bar">
             <div className="window-dots">
               <span className="dot red" />
               <span className="dot yellow" />
               <span className="dot green" />
             </div>
-            <span className="window-title">UniFlow X — Student Workspace (Piyush Jain)</span>
+            <span className="preview-url">uniflow.edu/dashboard</span>
           </div>
 
-          <div className="preview-body-grid">
-            {/* Dashboard Mock Shell */}
-            <div className="preview-card main-hero-preview">
-              <div className="preview-header">
-                <span className="preview-badge">Next Class</span>
-                <span className="preview-countdown">{nextClass.countdown}</span>
-              </div>
-              <h3 className="preview-title">{nextClass.subject} ({nextClass.code})</h3>
-              <p className="preview-meta">{nextClass.time} • {nextClass.room} • {nextClass.faculty}</p>
+          <div className="preview-workspace-preview">
+            <div className="preview-greeting">
+              <span className="preview-greeting-muted">Good morning,</span>
+              <h2 className="preview-greeting-bold">{student.name}.</h2>
+              <span className="preview-date">{student.dateFormatted}</span>
             </div>
 
-            <div className="preview-card attendance-preview">
-              <div className="preview-header">
-                <span>Overall Attendance</span>
-                <span className="preview-percentage">{attendance.overallPercentage}%</span>
+            <div className="preview-hero-row">
+              <div className="preview-box">
+                <span className="preview-tag">NEXT CLASS</span>
+                <h3 className="preview-class-title">{nextClass.subject}</h3>
+                <p className="preview-class-sub">{nextClass.time} · {nextClass.room}</p>
+                <span className="preview-timer">{nextClass.countdown}</span>
               </div>
-              <div className="preview-progress-bar">
-                <div className="preview-progress-fill" style={{ width: `${attendance.overallPercentage}%` }} />
-              </div>
-              <p className="preview-note">Satisfactory • 78/95 lectures attended</p>
-            </div>
 
-            <div className="preview-card assignments-preview">
-              <div className="preview-header">
-                <span>Pending Assignment</span>
-                <span className="preview-urgent">Due Tomorrow</span>
+              <div className="preview-box">
+                <span className="preview-tag">ATTENDANCE</span>
+                <h3 className="preview-class-title">{attendance.overallPercentage}%</h3>
+                <div className="v2-progress-track" style={{ height: '6px', margin: '8px 0' }}>
+                  <div className="v2-progress-fill" style={{ width: `${attendance.overallPercentage}%` }} />
+                </div>
+                <p className="preview-class-sub">{attendance.missableClassesText}</p>
               </div>
-              <h4 className="preview-sub">Data Structures Assignment 3</h4>
-              <p className="preview-desc">AVL Tree Rotations & Heap Implementation</p>
-            </div>
-
-            <div className="preview-card uniai-preview">
-              <div className="preview-header">
-                <Icon name="uniAi" size={16} />
-                <span>UniAI Intelligence</span>
-              </div>
-              <p className="preview-ai-msg">"You have 3 upcoming assignments. Data Structures is due tomorrow at 11:59 PM."</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Feature Grid */}
-      <section className="landing-features">
-        <div className="feature-block">
-          <Icon name="dashboard" size={24} className="feature-icon" />
-          <h3>Intelligent Dashboard</h3>
-          <p>Real-time class countdowns, attendance metrics, and priority deadline alerts in one view.</p>
-        </div>
+      {/* Features Section */}
+      <section className="v2-features-section">
+        <h2 className="v2-section-heading">FEATURES</h2>
+        <div className="v2-features-grid">
+          <div className="feature-item">
+            <Icon name="academics" size={20} className="feat-icon" />
+            <h3>Academic Intelligence</h3>
+            <p>Subject rosters, assignment submission deadlines, and automated attendance predictions.</p>
+          </div>
 
-        <div className="feature-block">
-          <Icon name="attendance" size={24} className="feature-icon" />
-          <h3>Smart Attendance</h3>
-          <p>Automated threshold monitoring and intelligent prediction algorithms for lecture tracking.</p>
-        </div>
+          <div className="feature-item">
+            <Icon name="campus" size={20} className="feat-icon" />
+            <h3>Campus Ecosystem</h3>
+            <p>Unified discovery for campus events, societies, vector wayfinding maps, and services.</p>
+          </div>
 
-        <div className="feature-block">
-          <Icon name="uniAi" size={24} className="feature-icon" />
-          <h3>UniAI Copilot</h3>
-          <p>Context-aware assistant for schedule queries, exam reminders, and campus navigation.</p>
+          <div className="feature-item">
+            <Icon name="uniAi" size={20} className="feat-icon" />
+            <h3>AI Assistant</h3>
+            <p>Contextual copilot trained on your semester schedule, course syllabi, and administrative deadlines.</p>
+          </div>
+
+          <div className="feature-item">
+            <Icon name="digitalId" size={20} className="feat-icon" />
+            <h3>Digital Identity</h3>
+            <p>Secure digital ID cards, hall tickets, and friction-free campus pass verifications.</p>
+          </div>
         </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="v2-final-cta">
+        <h2>Experience the future of campus operating systems.</h2>
+        <Link to="/login" className="v2-btn-primary lg-btn" style={{ marginTop: '20px' }}>
+          Get Started with UniFlow X
+        </Link>
       </section>
     </div>
   );

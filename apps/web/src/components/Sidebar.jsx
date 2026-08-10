@@ -13,8 +13,8 @@ const navigationGroups = [
     title: 'ACADEMICS',
     items: [
       { path: '/academics', label: 'Subjects', icon: 'academics' },
-      { path: '/attendance', label: 'Attendance', icon: 'attendance', badge: '82%' },
-      { path: '/assignments', label: 'Assignments', icon: 'assignments', badge: '3' },
+      { path: '/attendance', label: 'Attendance', icon: 'attendance' },
+      { path: '/assignments', label: 'Assignments', icon: 'assignments' },
       { path: '/exams', label: 'Exams', icon: 'exams' },
       { path: '/timetable', label: 'Timetable', icon: 'timetable' },
     ],
@@ -22,7 +22,7 @@ const navigationGroups = [
   {
     title: 'CAMPUS',
     items: [
-      { path: '/events', label: 'Events', icon: 'events', badge: 'New' },
+      { path: '/events', label: 'Events', icon: 'events' },
       { path: '/clubs', label: 'Clubs', icon: 'clubs' },
       { path: '/campus-map', label: 'Campus Map', icon: 'campusMap' },
       { path: '/campus', label: 'Services', icon: 'campus' },
@@ -31,14 +31,13 @@ const navigationGroups = [
   {
     title: 'INTELLIGENCE',
     items: [
-      { path: '/uni-ai', label: 'UniAI', icon: 'uniAi', isAi: true },
+      { path: '/uni-ai', label: 'UniAI', icon: 'uniAi' },
     ],
   },
 ];
 
 const bottomItems = [
-  { path: '/notifications', label: 'Notifications', icon: 'notifications', badge: '3' },
-  { path: '/profile', label: 'Profile', icon: 'profile' },
+  { path: '/notifications', label: 'Notifications', icon: 'notifications' },
   { path: '/settings', label: 'Settings', icon: 'settings' },
 ];
 
@@ -62,33 +61,34 @@ export function Sidebar({ isOpen = false, isCollapsed = false, onClose, onToggle
       {isOpen && <div className="sidebar-backdrop" onClick={onClose} aria-hidden="true" />}
 
       <aside
-        className={`sidebar ${isOpen ? 'sidebar-open' : ''} ${isCollapsed ? 'sidebar-collapsed' : ''}`}
-        aria-label="Main Navigation Sidebar"
+        className={`v2-sidebar ${isOpen ? 'sidebar-open' : ''} ${isCollapsed ? 'sidebar-collapsed' : ''}`}
+        aria-label="Main Sidebar Navigation"
       >
         {/* Brand Header */}
-        <div className="sidebar-header">
-          <NavLink to="/dashboard" className="sidebar-brand" onClick={onClose}>
-            <span className="brand-logo-icon">
-              <Icon name="sparkles" size={18} />
-            </span>
+        <div className="v2-sidebar-header">
+          <NavLink to="/dashboard" className="v2-brand-link" onClick={onClose}>
+            <div className="v2-brand-mark">
+              <Icon name="sparkles" size={14} />
+            </div>
             {!isCollapsed && (
-              <span className="brand-title">
-                UniFlow <span className="highlight">X</span>
-              </span>
+              <div className="v2-brand-text">
+                <span className="brand-uniflow">UNIFLOW</span>
+                <span className="brand-x">X</span>
+              </div>
             )}
           </NavLink>
 
-          <button className="sidebar-close-btn" onClick={onClose} aria-label="Close navigation drawer">
-            <Icon name="close" size={18} />
+          <button className="v2-close-btn" onClick={onClose} aria-label="Close menu">
+            <Icon name="close" size={16} />
           </button>
         </div>
 
         {/* Scrollable Groups */}
-        <div className="sidebar-scroll">
+        <div className="v2-sidebar-body">
           {navigationGroups.map((group) => (
-            <div key={group.title} className="sidebar-group">
-              {!isCollapsed && <span className="sidebar-section-label">{group.title}</span>}
-              <nav className="sidebar-nav">
+            <div key={group.title} className="v2-nav-group">
+              {!isCollapsed && <span className="v2-group-title">{group.title}</span>}
+              <nav className="v2-nav-list">
                 {group.items.map((item) => {
                   const isActive = location.pathname === item.path;
                   return (
@@ -96,14 +96,12 @@ export function Sidebar({ isOpen = false, isCollapsed = false, onClose, onToggle
                       key={item.path}
                       to={item.path}
                       onClick={onClose}
-                      className={`sidebar-link ${isActive ? 'active' : ''} ${item.isAi ? 'ai-link' : ''}`}
+                      className={`v2-nav-item ${isActive ? 'active' : ''}`}
                       title={isCollapsed ? item.label : undefined}
                     >
-                      <Icon name={item.icon} size={16} />
-                      {!isCollapsed && <span className="sidebar-link-text">{item.label}</span>}
-                      {!isCollapsed && item.badge && (
-                        <span className={`sidebar-badge ${item.isAi ? 'badge-ai' : ''}`}>{item.badge}</span>
-                      )}
+                      <Icon name={item.icon} size={15} className="v2-nav-icon" />
+                      {!isCollapsed && <span className="v2-nav-label">{item.label}</span>}
+                      {isActive && <span className="v2-active-dot" />}
                     </NavLink>
                   );
                 })}
@@ -112,9 +110,9 @@ export function Sidebar({ isOpen = false, isCollapsed = false, onClose, onToggle
           ))}
         </div>
 
-        {/* Bottom Pinned Items */}
-        <div className="sidebar-footer">
-          <nav className="sidebar-bottom-nav">
+        {/* Bottom Pinned Footer */}
+        <div className="v2-sidebar-footer">
+          <nav className="v2-nav-list">
             {bottomItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
@@ -122,42 +120,27 @@ export function Sidebar({ isOpen = false, isCollapsed = false, onClose, onToggle
                   key={item.path}
                   to={item.path}
                   onClick={onClose}
-                  className={`sidebar-link ${isActive ? 'active' : ''}`}
+                  className={`v2-nav-item ${isActive ? 'active' : ''}`}
                   title={isCollapsed ? item.label : undefined}
                 >
-                  <Icon name={item.icon} size={16} />
-                  {!isCollapsed && <span className="sidebar-link-text">{item.label}</span>}
-                  {!isCollapsed && item.badge && (
-                    <span className="sidebar-badge">{item.badge}</span>
-                  )}
+                  <Icon name={item.icon} size={15} className="v2-nav-icon" />
+                  {!isCollapsed && <span className="v2-nav-label">{item.label}</span>}
+                  {isActive && <span className="v2-active-dot" />}
                 </NavLink>
               );
             })}
           </nav>
 
-          {/* Student Profile Mini Card */}
-          <div className="user-mini-card">
-            <div className="avatar-circle">PJ</div>
+          {/* User Profile Tile */}
+          <NavLink to="/profile" className="v2-user-tile" onClick={onClose}>
+            <div className="v2-user-avatar">PJ</div>
             {!isCollapsed && (
-              <div className="user-info">
-                <span className="user-name">Piyush Jain</span>
-                <span className="user-role">B.Tech CSE • Sem 4</span>
+              <div className="v2-user-details">
+                <span className="v2-user-name">Piyush Jain</span>
+                <span className="v2-user-sub">B.Tech CSE · Sem 4</span>
               </div>
             )}
-          </div>
-
-          {/* Collapse Toggle Button */}
-          {onToggleCollapse && (
-            <button
-              onClick={onToggleCollapse}
-              className="sidebar-collapse-btn"
-              aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-              title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            >
-              <Icon name={isCollapsed ? 'chevronRight' : 'close'} size={14} />
-              {!isCollapsed && <span className="collapse-text">Collapse</span>}
-            </button>
-          )}
+          </NavLink>
         </div>
       </aside>
     </>
