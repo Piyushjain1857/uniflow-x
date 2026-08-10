@@ -1,15 +1,56 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
-export const COLORS = {
+export const ANIMATION_DURATIONS = {
+  fast: 150,
+  normal: 300,
+  slow: 500,
+};
+
+export const SPACING = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+  xxl: 48,
+};
+
+export const RADII = {
+  xs: 4,
+  sm: 8,
+  md: 14,
+  lg: 20,
+  pill: 9999,
+};
+
+export const TYPOGRAPHY = {
+  sizes: {
+    xs: 11,
+    sm: 13,
+    md: 15,
+    lg: 18,
+    xl: 22,
+    xxl: 28,
+  },
+  weights: {
+    regular: '400',
+    medium: '500',
+    semibold: '600',
+    bold: '700',
+    heavy: '800',
+  },
+};
+
+export const DARK_COLORS = {
   bgDark: '#090d16',
   bgSurface: '#0e1422',
   bgCard: '#131b2e',
   bgCardHover: '#1a243d',
-  bgGlass: 'rgba(255, 255, 255, 0.04)',
+  bgGlass: 'rgba(255, 255, 255, 0.05)',
   
   border: 'rgba(255, 255, 255, 0.09)',
   borderActive: 'rgba(56, 189, 248, 0.4)',
-  
+
   primary: '#38bdf8',
   primaryGlow: 'rgba(56, 189, 248, 0.25)',
   accentPurple: '#c084fc',
@@ -24,123 +65,65 @@ export const COLORS = {
   textInverse: '#090d16',
 };
 
-export const SPACING = {
-  xs: 4,
-  sm: 8,
-  md: 16,
-  lg: 24,
-  xl: 32,
+export const LIGHT_COLORS = {
+  bgDark: '#f8fafc',
+  bgSurface: '#ffffff',
+  bgCard: '#ffffff',
+  bgCardHover: '#f1f5f9',
+  bgGlass: 'rgba(0, 0, 0, 0.04)',
+  
+  border: 'rgba(0, 0, 0, 0.08)',
+  borderActive: 'rgba(2, 132, 199, 0.4)',
+
+  primary: '#0284c7',
+  primaryGlow: 'rgba(2, 132, 199, 0.2)',
+  accentPurple: '#9333ea',
+  accentIndigo: '#4f46e5',
+  accentEmerald: '#059669',
+  accentAmber: '#d97706',
+  accentRose: '#e11d48',
+
+  textMain: '#0f172a',
+  textMuted: '#475569',
+  textDim: '#94a3b8',
+  textInverse: '#ffffff',
 };
 
-export const RADII = {
-  sm: 8,
-  md: 14,
-  lg: 20,
-  pill: 9999,
-};
+// Default Theme pointing to Dark mode
+export const COLORS = DARK_COLORS;
 
-export const globalStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.bgDark,
-  },
-  content: {
-    flex: 1,
-    padding: SPACING.md,
-  },
-  card: {
-    backgroundColor: COLORS.bgCard,
-    borderRadius: RADII.md,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    padding: SPACING.md,
-    marginVertical: SPACING.xs,
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: COLORS.textMain,
-    marginBottom: 4,
-  },
-  cardDesc: {
-    fontSize: 13,
-    color: COLORS.textMuted,
-    lineHeight: 18,
-  },
-  primaryButton: {
-    backgroundColor: COLORS.primary,
-    borderRadius: RADII.pill,
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    gap: 8,
-  },
-  primaryButtonText: {
-    color: '#040914',
-    fontSize: 15,
-    fontWeight: '700',
-  },
-  secondaryButton: {
-    backgroundColor: COLORS.bgGlass,
-    borderRadius: RADII.pill,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    gap: 8,
-  },
-  secondaryButtonText: {
-    color: COLORS.textMain,
-    fontSize: 15,
-    fontWeight: '600',
-  },
-  badge: {
-    alignSelf: 'flex-start',
-    backgroundColor: 'rgba(56, 189, 248, 0.12)',
-    borderWidth: 1,
-    borderColor: 'rgba(56, 189, 248, 0.3)',
-    borderRadius: RADII.pill,
-    paddingVertical: 3,
-    paddingHorizontal: 10,
-  },
-  badgeText: {
-    color: COLORS.primary,
-    fontSize: 11,
-    fontWeight: '700',
-  },
-  badgePurple: {
-    backgroundColor: 'rgba(192, 132, 252, 0.12)',
-    borderColor: 'rgba(192, 132, 252, 0.3)',
-  },
-  badgePurpleText: {
-    color: COLORS.accentPurple,
-  },
-  badgeEmerald: {
-    backgroundColor: 'rgba(52, 211, 153, 0.12)',
-    borderColor: 'rgba(52, 211, 153, 0.3)',
-  },
-  badgeEmeraldText: {
-    color: COLORS.accentEmerald,
-  },
-  input: {
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: RADII.sm,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    color: COLORS.textMain,
-    fontSize: 15,
-  },
-  inputLabel: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: COLORS.textMain,
-    marginBottom: 6,
-  },
-});
+export const SHADOWS = {
+  small: Platform.select({
+    ios: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.15,
+      shadowRadius: 4,
+    },
+    android: {
+      elevation: 2,
+    },
+  }),
+  medium: Platform.select({
+    ios: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.25,
+      shadowRadius: 8,
+    },
+    android: {
+      elevation: 5,
+    },
+  }),
+  large: Platform.select({
+    ios: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 0.35,
+      shadowRadius: 16,
+    },
+    android: {
+      elevation: 10,
+    },
+  }),
+};
