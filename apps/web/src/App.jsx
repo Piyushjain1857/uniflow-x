@@ -17,6 +17,7 @@ import Assignments from './pages/Assignments';
 import Timetable from './pages/Timetable';
 import Campus from './pages/Campus';
 import UniAI from './pages/UniAI';
+import Notifications from './pages/Notifications';
 import PlaceholderPage from './pages/PlaceholderPage';
 import NotFound from './pages/NotFound';
 import DesignSystemShowcase from './pages/DesignSystemShowcase';
@@ -54,7 +55,7 @@ function App() {
             
             <Route path="uni-ai" element={<UniAI />} />
             <Route path="digital-id" element={<PlaceholderPage routePath="/digital-id" />} />
-            <Route path="notifications" element={<PlaceholderPage routePath="/notifications" />} />
+            <Route path="notifications" element={<Notifications />} />
             <Route path="profile" element={<PlaceholderPage routePath="/profile" />} />
             <Route path="settings" element={<PlaceholderPage routePath="/settings" />} />
             
