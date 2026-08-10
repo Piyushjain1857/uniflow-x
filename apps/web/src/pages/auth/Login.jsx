@@ -1,154 +1,117 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Icon from '../../components/Icon';
-import { APP_CONFIG } from '@uniflow-x/constants';
+import { Input, Button, Checkbox } from '../../components/ui';
 
 export function Login() {
-  const [selectedRole, setSelectedRole] = useState('student');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('piyush.jain@uniflow.edu');
+  const [password, setPassword] = useState('••••••••••••');
   const [rememberMe, setRememberMe] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Non-functional mock auth step for Prompt 02
-    if (selectedRole === 'faculty') navigate('/faculty');
-    else if (selectedRole === 'admin') navigate('/admin');
-    else navigate('/dashboard');
-  };
-
-  const setDemoCredentials = (role) => {
-    setSelectedRole(role);
-    if (role === 'student') {
-      setEmail('alex.vance@university.edu');
-      setPassword('••••••••••••');
-    } else if (role === 'faculty') {
-      setEmail('dr.sarah.jenkins@university.edu');
-      setPassword('••••••••••••');
-    } else {
-      setEmail('admin.ops@university.edu');
-      setPassword('••••••••••••');
-    }
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      navigate('/dashboard');
+    }, 600);
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-card glass-panel">
-        <div className="auth-header">
-          <div className="auth-brand-logo">
-            <Icon name="sparkles" size={24} />
+    <div className="login-split-page">
+      {/* Left Branding Side (Desktop) */}
+      <div className="login-branding-panel">
+        <div className="branding-content">
+          <Link to="/" className="brand-logo-large">
+            <span className="brand-icon-wrap">
+              <Icon name="sparkles" size={24} />
+            </span>
+            <span>UniFlow <span style={{ color: 'var(--color-primary)' }}>X</span></span>
+          </Link>
+
+          <h2 className="branding-title">Your University. <br />One Intelligent OS.</h2>
+          <p className="branding-subtext">
+            A unified digital operating system connecting academics, smart attendance, campus life, services, and AI-assisted governance.
+          </p>
+
+          <div className="branding-quote">
+            <p>"UniFlow X turned fragmented campus portals into one seamless desktop experience."</p>
+            <span>— Piyush Jain, CS Senior</span>
           </div>
-          <h2 className="auth-title">Welcome to {APP_CONFIG.APP_NAME}</h2>
-          <p className="auth-subtitle">Sign in to your digital campus account</p>
         </div>
+      </div>
 
-        {/* Role Selector Tabs */}
-        <div className="auth-role-tabs">
-          <button
-            type="button"
-            className={`auth-role-tab ${selectedRole === 'student' ? 'active' : ''}`}
-            onClick={() => setDemoCredentials('student')}
-          >
-            <Icon name="profile" size={16} />
-            <span>Student</span>
-          </button>
-          <button
-            type="button"
-            className={`auth-role-tab ${selectedRole === 'faculty' ? 'active' : ''}`}
-            onClick={() => setDemoCredentials('faculty')}
-          >
-            <Icon name="faculty" size={16} />
-            <span>Faculty</span>
-          </button>
-          <button
-            type="button"
-            className={`auth-role-tab ${selectedRole === 'admin' ? 'active' : ''}`}
-            onClick={() => setDemoCredentials('admin')}
-          >
-            <Icon name="admin" size={16} />
-            <span>Admin</span>
-          </button>
-        </div>
-
-        <form onSubmit={handleLogin} className="auth-form">
-          <div className="form-group">
-            <label className="form-label" htmlFor="email">
-              University Email / Username
-            </label>
-            <div className="input-wrap">
-              <Icon name="profile" size={18} className="input-icon" />
-              <input
-                id="email"
-                type="email"
-                required
-                className="form-input"
-                placeholder="netid@university.edu"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
+      {/* Right Login Card Side */}
+      <div className="login-form-panel">
+        <div className="login-card">
+          <div className="login-header">
+            <h1 className="login-title">Sign In to UniFlow X</h1>
+            <p className="login-subtitle">Enter your institutional credentials to access your workspace</p>
           </div>
 
-          <div className="form-group">
-            <div className="form-label-row">
-              <label className="form-label" htmlFor="password">
-                Security Password
-              </label>
-              <Link to="/forgot-password" className="auth-link-sm">
-                Forgot password?
-              </Link>
-            </div>
-            <div className="input-wrap">
-              <Icon name="forgotPassword" size={18} className="input-icon" />
-              <input
-                id="password"
-                type="password"
-                required
-                className="form-input"
+          <form onSubmit={handleLogin} className="login-form">
+            <Input
+              label="University Email"
+              type="email"
+              placeholder="netid@uniflow.edu"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              startIcon="profile"
+              isRequired
+            />
+
+            <div className="password-input-wrap">
+              <Input
+                label="Password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                startIcon="lock"
+                isRequired
               />
+              <button
+                type="button"
+                className="show-password-btn"
+                onClick={() => setShowPassword(!showPassword)}
+                title={showPassword ? 'Hide password' : 'Show password'}
+              >
+                <Icon name={showPassword ? 'close' : 'sparkles'} size={14} />
+              </button>
             </div>
-          </div>
 
-          <div className="form-options">
-            <label className="checkbox-label">
-              <input
-                type="checkbox"
+            <div className="login-options-row">
+              <Checkbox
+                label="Remember me"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
               />
-              <span>Remember session on this browser</span>
-            </label>
-          </div>
 
-          <button type="submit" className="btn-primary auth-submit-btn">
-            <span>Sign In to {selectedRole.toUpperCase()} Portal</span>
-            <Icon name="arrowRight" size={18} />
-          </button>
-        </form>
+              <Link to="/forgot-password" className="forgot-link">
+                Forgot password?
+              </Link>
+            </div>
 
-        {/* Quick Demo Pre-fill Pill */}
-        <div className="auth-demo-helper">
-          <span>Demo Account: </span>
-          <button onClick={() => setDemoCredentials('student')} className="demo-chip">
-            Student
-          </button>
-          <button onClick={() => setDemoCredentials('faculty')} className="demo-chip">
-            Faculty
-          </button>
-          <button onClick={() => setDemoCredentials('admin')} className="demo-chip">
-            Admin
-          </button>
-        </div>
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              isLoading={loading}
+              className="login-submit-btn"
+            >
+              Sign In to Portal
+            </Button>
 
-        <div className="auth-footer-link">
-          <span>Don't have an active account? </span>
-          <Link to="/register" className="auth-link-highlight">
-            Register new profile
-          </Link>
+            <div className="login-footer">
+              <span>Don't have an account? </span>
+              <Link to="/register" className="register-link">
+                Create Account
+              </Link>
+            </div>
+          </form>
         </div>
       </div>
     </div>

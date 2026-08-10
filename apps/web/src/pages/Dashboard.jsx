@@ -3,242 +3,215 @@ import { Link } from 'react-router-dom';
 import Icon from '../components/Icon';
 import PageContainer from '../components/PageContainer';
 import {
-  Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter,
+  Card, CardHeader, CardTitle, CardContent,
   Badge,
   Button,
   Progress,
   Alert,
 } from '../components/ui';
-import { dashboardMockData } from '../data/dashboardMockData';
+import { mockData } from '../data/mockData';
 
 export function Dashboard() {
   const [aiQuery, setAiQuery] = useState('');
-  const { studentInfo, nextClass, attendanceOverview, upcoming, attentionItems, uniAiPrompts } = dashboardMockData;
+  const { student, nextClass, attendance, todayTimeline, attentionItems, upcomingEvents } = mockData;
 
-  const handleAiQuerySubmit = (e) => {
+  const handleAiAsk = (e) => {
     e.preventDefault();
     if (aiQuery.trim()) {
-      alert(`UniAI Query Submitted: "${aiQuery}"`);
+      alert(`UniAI Query: "${aiQuery}"`);
       setAiQuery('');
     }
   };
 
   return (
     <PageContainer className="dashboard-page">
-      {/* 1. Header Greeting & Date */}
-      <div className="dashboard-welcome-header">
+      {/* 1. Top Header */}
+      <div className="dashboard-header-block">
         <div>
-          <h1 className="welcome-title">{studentInfo.greeting}</h1>
-          <p className="welcome-date">{studentInfo.todayDateFormatted} • {studentInfo.currentSemester}</p>
+          <h1 className="dashboard-greeting">{student.greeting}</h1>
+          <p className="dashboard-date-meta">{student.todayFormatted} • {student.currentSemester}</p>
         </div>
-        <div className="welcome-actions">
-          <Badge variant="primary" size="md" hasDot>
-            {studentInfo.role}
+        <div className="dashboard-user-badge">
+          <Badge variant="primary" size="md">
+            {student.program} (Sem 4)
           </Badge>
         </div>
       </div>
 
-      {/* 2. Attention Section (Notices, Warnings, Deadlines) */}
-      <div className="attention-section">
-        {attentionItems.map((item) => (
-          <Alert
-            key={item.id}
-            variant={item.variant}
-            title={item.title}
-            isDismissible
-            className="attention-banner"
-          >
-            {item.message}
-          </Alert>
-        ))}
+      {/* 2. NEXT CLASS HERO CARD */}
+      <div className="next-class-card">
+        <div className="next-class-header">
+          <div className="next-class-badge">
+            <span className="pulse-dot green" />
+            <span>NEXT CLASS</span>
+          </div>
+          <span className="countdown-pill">{nextClass.countdown}</span>
+        </div>
+
+        <div className="next-class-content">
+          <span className="next-class-code">{nextClass.code}</span>
+          <h2 className="next-class-name">{nextClass.subject}</h2>
+          <div className="next-class-details">
+            <span className="meta-pill"><Icon name="timetable" size={14} /> {nextClass.time}</span>
+            <span className="meta-pill"><Icon name="campusMap" size={14} /> {nextClass.room}</span>
+            <span className="meta-pill"><Icon name="faculty" size={14} /> {nextClass.faculty}</span>
+          </div>
+        </div>
       </div>
 
-      {/* Main Grid Layout */}
+      {/* Main Multi-Column Grid */}
       <div className="dashboard-grid">
-        {/* Left / Main Column */}
+        {/* Left Main Column */}
         <div className="dashboard-main-col">
-          {/* Next Class Hero Card */}
-          <div className="next-class-card">
-            <div className="next-class-badge-row">
-              <span className="live-status-pill">
-                <span className="pulse-dot green" />
-                <span>Next Class</span>
-              </span>
-              <span className="countdown-pill">{nextClass.countdown}</span>
-            </div>
 
-            <div className="next-class-info">
-              <span className="next-class-code">{nextClass.code}</span>
-              <h2 className="next-class-title">{nextClass.subject}</h2>
-              <div className="next-class-meta">
-                <div className="meta-item">
-                  <Icon name="timetable" size={16} />
-                  <span>{nextClass.time}</span>
-                </div>
-                <div className="meta-item">
-                  <Icon name="campusMap" size={16} />
-                  <span>{nextClass.room}</span>
-                </div>
-                <div className="meta-item">
-                  <Icon name="faculty" size={16} />
-                  <span>{nextClass.instructor}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Attendance Overview Section */}
+          {/* 3. ATTENDANCE OVERVIEW */}
           <section className="dashboard-section">
-            <div className="section-header-row">
-              <div>
-                <h3 className="section-title">Attendance Overview</h3>
-                <p className="section-subtitle">Overall Average: <strong style={{ color: 'var(--color-success)' }}>{attendanceOverview.overallPercentage}%</strong> ({attendanceOverview.attendedClasses}/{attendanceOverview.totalClasses} lectures attended)</p>
-              </div>
-              <Link to="/attendance" className="section-link">View Full Record →</Link>
+            <div className="section-header">
+              <h3 className="section-title">Attendance Overview</h3>
+              <Link to="/attendance" className="section-link">View Detailed Breakdown →</Link>
             </div>
 
-            <div className="attendance-cards-grid">
-              {attendanceOverview.subjects.map((sub) => (
-                <Card key={sub.id} className="subject-attendance-card">
-                  <div className="subject-card-header">
-                    <span className="subject-code-badge">{sub.code}</span>
-                    <Badge variant={sub.variant === 'success' ? 'success' : 'warning'} size="sm" hasDot>
-                      {sub.percentage}%
-                    </Badge>
+            <Card className="overall-attendance-card">
+              <div className="overall-gauge-row">
+                <div className="gauge-info">
+                  <span className="gauge-label">Overall Attendance</span>
+                  <div className="gauge-value">{attendance.overallPercentage}%</div>
+                  <span className="gauge-status">Status: Satisfactory ({attendance.attendedClasses}/{attendance.totalClasses} Lectures)</span>
+                </div>
+
+                <div className="horizontal-gauge-wrap">
+                  <Progress
+                    value={attendance.overallPercentage}
+                    max={100}
+                    variant={attendance.overallPercentage >= 80 ? 'primary' : 'warning'}
+                    size="lg"
+                  />
+                </div>
+              </div>
+
+              {/* Subject Cards */}
+              <div className="subject-cards-grid">
+                {attendance.subjects.map((sub) => (
+                  <div key={sub.id} className="subject-mini-card">
+                    <div className="subject-top">
+                      <span className="sub-code">{sub.code}</span>
+                      <span className="sub-perc">{sub.percentage}%</span>
+                    </div>
+                    <h4 className="sub-name">{sub.name}</h4>
+                    <p className="sub-classes">{sub.present}/{sub.total} Classes</p>
+                    <Progress value={sub.percentage} max={100} variant={sub.percentage >= 80 ? 'primary' : 'warning'} size="sm" />
                   </div>
-                  <h4 className="subject-name">{sub.name}</h4>
-                  <p className="subject-counts">{sub.attended} of {sub.total} classes attended</p>
-                  <Progress value={sub.percentage} max={100} variant={sub.variant} size="sm" />
+                ))}
+              </div>
+            </Card>
+          </section>
+
+          {/* 4. TODAY CLASS TIMELINE */}
+          <section className="dashboard-section">
+            <div className="section-header">
+              <h3 className="section-title">TODAY SCHEDULE</h3>
+            </div>
+
+            <Card>
+              <CardContent className="today-timeline-list">
+                {todayTimeline.map((item) => (
+                  <div key={item.id} className={`timeline-row ${item.status === 'up-next' ? 'active-row' : ''}`}>
+                    <div className="time-badge">{item.time}</div>
+                    <div className="row-content">
+                      <h4 className="row-title">{item.subject} ({item.code})</h4>
+                      <p className="row-meta">{item.room} • {item.faculty}</p>
+                    </div>
+                    {item.status === 'up-next' && <Badge variant="primary" size="sm">Up Next</Badge>}
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* 5. NEEDS YOUR ATTENTION */}
+          <section className="dashboard-section">
+            <div className="section-header">
+              <h3 className="section-title">NEEDS YOUR ATTENTION</h3>
+            </div>
+
+            <div className="attention-list">
+              {attentionItems.map((item) => (
+                <Alert
+                  key={item.id}
+                  variant={item.variant === 'rose' ? 'danger' : item.variant === 'amber' ? 'warning' : 'info'}
+                  title={item.title}
+                  isDismissible
+                >
+                  {item.description}
+                </Alert>
+              ))}
+            </div>
+          </section>
+
+          {/* 6. UPCOMING EVENTS */}
+          <section className="dashboard-section">
+            <div className="section-header">
+              <h3 className="section-title">UPCOMING EVENTS</h3>
+              <Link to="/events" className="section-link">View All Events →</Link>
+            </div>
+
+            <div className="events-cards-grid">
+              {upcomingEvents.map((ev) => (
+                <Card key={ev.id} isHoverable className="event-card">
+                  <div className="event-card-header">
+                    <Badge variant="secondary" size="sm">{ev.category}</Badge>
+                    <span className="event-date">{ev.date}</span>
+                  </div>
+                  <h4 className="event-title">{ev.title}</h4>
+                  <p className="event-meta"><Icon name="campusMap" size={12} /> {ev.location} • {ev.attendees} Attending</p>
                 </Card>
               ))}
             </div>
           </section>
-
-          {/* Upcoming Section (Assignments, Exams, Events) */}
-          <section className="dashboard-section">
-            <div className="section-header-row">
-              <h3 className="section-title">Upcoming Schedule & Tasks</h3>
-            </div>
-
-            <div className="upcoming-tabs-grid">
-              {/* Upcoming Assignments Card */}
-              <Card>
-                <CardHeader>
-                  <div className="card-title-row">
-                    <Icon name="assignments" size={20} className="text-primary" />
-                    <CardTitle style={{ fontSize: '1.05rem' }}>Pending Assignments</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="upcoming-list">
-                  {upcoming.assignments.map((asg) => (
-                    <div key={asg.id} className="upcoming-item">
-                      <div className="item-left">
-                        <span className="item-code">{asg.code}</span>
-                        <h5 className="item-title">{asg.title}</h5>
-                        <span className="item-date">{asg.dueDate}</span>
-                      </div>
-                      {asg.urgent && <Badge variant="danger" size="sm">Urgent</Badge>}
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              {/* Upcoming Exams Card */}
-              <Card>
-                <CardHeader>
-                  <div className="card-title-row">
-                    <Icon name="exams" size={20} className="text-purple" />
-                    <CardTitle style={{ fontSize: '1.05rem' }}>Upcoming Exams</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="upcoming-list">
-                  {upcoming.exams.map((ex) => (
-                    <div key={ex.id} className="upcoming-item">
-                      <div className="item-left">
-                        <span className="item-code">{ex.code}</span>
-                        <h5 className="item-title">{ex.title}</h5>
-                        <span className="item-date">{ex.date} • {ex.hall}</span>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </div>
-          </section>
         </div>
 
-        {/* Right / Sidebar Column */}
+        {/* Right Column: UniAI Assistant Card */}
         <div className="dashboard-side-col">
-          {/* UniAI Copilot Interactive Card */}
-          <Card className="uniai-copilot-card">
-            <div className="uniai-header">
-              <div className="uniai-icon-badge">
+          {/* 7. UNIAI ASSISTANT CARD */}
+          <Card className="uniai-large-card">
+            <div className="uniai-card-header">
+              <div className="uniai-brand-icon">
                 <Icon name="uniAi" size={22} />
               </div>
               <div>
-                <h3 className="uniai-title">UniAI Copilot</h3>
-                <p className="uniai-subtitle">Instant University Assistant</p>
+                <h3 className="uniai-card-title">UniAI Assistant</h3>
+                <p className="uniai-card-sub">Your Intelligent OS Copilot</p>
               </div>
             </div>
 
-            <p className="uniai-prompt-text">
-              "Ask UniAI anything about your university"
+            <p className="uniai-card-prompt">
+              Ask UniAI anything about your university.
             </p>
 
-            <form onSubmit={handleAiQuerySubmit} className="uniai-form">
+            <form onSubmit={handleAiAsk} className="uniai-ask-form">
               <div className="uniai-input-wrap">
                 <input
                   type="text"
-                  placeholder="Type a question or schedule request..."
+                  placeholder="What do you want to know?"
                   value={aiQuery}
                   onChange={(e) => setAiQuery(e.target.value)}
-                  className="uniai-input"
+                  className="uniai-ask-input"
                 />
-                <button type="submit" className="uniai-send-btn" aria-label="Send query">
-                  <Icon name="arrowRight" size={16} />
-                </button>
               </div>
+              <Button type="submit" variant="primary" size="md" icon="sparkles" className="uniai-ask-btn">
+                Ask UniAI
+              </Button>
             </form>
 
-            <div className="uniai-pills-list">
-              <span className="uniai-pills-label">Quick Prompts:</span>
-              {uniAiPrompts.map((prompt, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => setAiQuery(prompt)}
-                  className="uniai-prompt-pill"
-                >
-                  <Icon name="sparkles" size={12} />
-                  <span>{prompt}</span>
-                </button>
-              ))}
+            <div className="uniai-quick-prompts">
+              <span className="quick-label">Suggested Queries:</span>
+              <button type="button" onClick={() => setAiQuery('What assignments do I have this week?')} className="uniai-prompt-chip">
+                "What assignments do I have this week?"
+              </button>
+              <button type="button" onClick={() => setAiQuery('Will my attendance drop below 80% if I miss next class?')} className="uniai-prompt-chip">
+                "Will my attendance drop if I miss next class?"
+              </button>
             </div>
-          </Card>
-
-          {/* Quick Actions Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle style={{ fontSize: '1rem' }}>Quick Shortcuts</CardTitle>
-            </CardHeader>
-            <CardContent className="shortcuts-grid">
-              <Link to="/digital-id" className="shortcut-btn">
-                <Icon name="digitalId" size={18} />
-                <span>Digital ID Pass</span>
-              </Link>
-              <Link to="/timetable" className="shortcut-btn">
-                <Icon name="timetable" size={18} />
-                <span>Timetable</span>
-              </Link>
-              <Link to="/campus-map" className="shortcut-btn">
-                <Icon name="campusMap" size={18} />
-                <span>Campus Map</span>
-              </Link>
-              <Link to="/complaints" className="shortcut-btn">
-                <Icon name="complaints" size={18} />
-                <span>Grievance Desk</span>
-              </Link>
-            </CardContent>
           </Card>
         </div>
       </div>

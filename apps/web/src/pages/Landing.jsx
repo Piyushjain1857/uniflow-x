@@ -1,149 +1,129 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Icon from '../components/Icon';
-import { USER_ROLES, APP_CONFIG } from '@uniflow-x/constants';
-import { formatRoleName } from '@uniflow-x/utils';
+import { mockData } from '../data/mockData';
 
 export function Landing() {
+  const { student, attendance, nextClass } = mockData;
+
   return (
-    <div className="landing-page">
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-badge">
-          <Icon name="sparkles" size={16} />
-          <span>Next-Generation Campus OS</span>
+    <div className="landing-container">
+      {/* Top Navbar */}
+      <nav className="landing-nav">
+        <div className="brand-logo">
+          <span className="brand-icon-wrap">
+            <Icon name="sparkles" size={18} />
+          </span>
+          <span>UniFlow <span style={{ color: 'var(--color-primary)' }}>X</span></span>
         </div>
-        
-        <h1 className="hero-main-title">
-          The AI-Powered Digital Operating System for <span className="gradient-text">Universities</span>
+
+        <div className="nav-links">
+          <Link to="/dashboard" className="nav-item">Product Tour</Link>
+          <Link to="/academics" className="nav-item">Academics</Link>
+          <Link to="/uni-ai" className="nav-item">UniAI Studio</Link>
+          <Link to="/login" className="ui-btn ui-btn-primary ui-btn-sm">
+            Sign In
+          </Link>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="landing-hero">
+        <div className="hero-pill-badge">
+          <Icon name="sparkles" size={14} />
+          <span>Next-Generation University Platform</span>
+        </div>
+
+        <h1 className="hero-heading">
+          Your University. <br />
+          <span className="text-primary-gradient">One Intelligent OS.</span>
         </h1>
-        
-        <p className="hero-lead">
-          UniFlow X unifies academics, smart attendance, digital identity, campus life, and administrative governance into one intelligent, intuitive web shell.
+
+        <p className="hero-subtext">
+          A unified digital platform connecting academics, campus life, communication, services, and intelligent assistance.
         </p>
 
-        <div className="hero-cta-group">
-          <RouterLink to="/dashboard" className="btn-primary hero-btn">
-            <span>Explore App Shell</span>
+        <div className="hero-cta-row">
+          <Link to="/login" className="ui-btn ui-btn-primary ui-btn-lg">
+            <span>Get Started</span>
             <Icon name="arrowRight" size={18} />
-          </RouterLink>
-          
-          <RouterLink to="/login" className="btn-secondary hero-btn">
-            <Icon name="login" size={18} />
-            <span>Sign In to Portal</span>
-          </RouterLink>
+          </Link>
+          <Link to="/dashboard" className="ui-btn ui-btn-secondary ui-btn-lg">
+            <span>Explore UniFlow</span>
+          </Link>
         </div>
 
-        <div className="hero-meta-stats">
-          <div className="stat-pill">
-            <span className="stat-value">15,000+</span>
-            <span className="stat-label">Enrolled Students</span>
+        {/* Realistic Interactive Product Preview Window */}
+        <div className="product-preview-frame">
+          <div className="preview-window-bar">
+            <div className="window-dots">
+              <span className="dot red" />
+              <span className="dot yellow" />
+              <span className="dot green" />
+            </div>
+            <span className="window-title">UniFlow X — Student Workspace (Piyush Jain)</span>
           </div>
-          <div className="stat-divider" />
-          <div className="stat-pill">
-            <span className="stat-value">99.9%</span>
-            <span className="stat-label">System Uptime</span>
-          </div>
-          <div className="stat-divider" />
-          <div className="stat-pill">
-            <span className="stat-value">Instant</span>
-            <span className="stat-label">UniAI Response</span>
+
+          <div className="preview-body-grid">
+            {/* Dashboard Mock Shell */}
+            <div className="preview-card main-hero-preview">
+              <div className="preview-header">
+                <span className="preview-badge">Next Class</span>
+                <span className="preview-countdown">{nextClass.countdown}</span>
+              </div>
+              <h3 className="preview-title">{nextClass.subject} ({nextClass.code})</h3>
+              <p className="preview-meta">{nextClass.time} • {nextClass.room} • {nextClass.faculty}</p>
+            </div>
+
+            <div className="preview-card attendance-preview">
+              <div className="preview-header">
+                <span>Overall Attendance</span>
+                <span className="preview-percentage">{attendance.overallPercentage}%</span>
+              </div>
+              <div className="preview-progress-bar">
+                <div className="preview-progress-fill" style={{ width: `${attendance.overallPercentage}%` }} />
+              </div>
+              <p className="preview-note">Satisfactory • 78/95 lectures attended</p>
+            </div>
+
+            <div className="preview-card assignments-preview">
+              <div className="preview-header">
+                <span>Pending Assignment</span>
+                <span className="preview-urgent">Due Tomorrow</span>
+              </div>
+              <h4 className="preview-sub">Data Structures Assignment 3</h4>
+              <p className="preview-desc">AVL Tree Rotations & Heap Implementation</p>
+            </div>
+
+            <div className="preview-card uniai-preview">
+              <div className="preview-header">
+                <Icon name="uniAi" size={16} />
+                <span>UniAI Intelligence</span>
+              </div>
+              <p className="preview-ai-msg">"You have 3 upcoming assignments. Data Structures is due tomorrow at 11:59 PM."</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Role Selector Showcase */}
-      <section className="section-block">
-        <div className="section-header">
-          <span className="section-subtitle">Tailored Role Portals</span>
-          <h2 className="section-title">Built for Every Member of Campus</h2>
+      {/* Feature Grid */}
+      <section className="landing-features">
+        <div className="feature-block">
+          <Icon name="dashboard" size={24} className="feature-icon" />
+          <h3>Intelligent Dashboard</h3>
+          <p>Real-time class countdowns, attendance metrics, and priority deadline alerts in one view.</p>
         </div>
 
-        <div className="roles-grid">
-          <div className="role-card glass-panel">
-            <div className="role-icon-wrap blue">
-              <Icon name="profile" size={28} />
-            </div>
-            <span className="badge badge-blue">Student Portal</span>
-            <h3>Student Workspace</h3>
-            <p>Access course materials, log attendance, track grades, submit assignments, and manage digital student ID.</p>
-            <RouterLink to="/dashboard" className="role-card-link">
-              <span>Enter Student View</span>
-              <Icon name="arrowRight" size={16} />
-            </RouterLink>
-          </div>
-
-          <div className="role-card glass-panel">
-            <div className="role-icon-wrap purple">
-              <Icon name="faculty" size={28} />
-            </div>
-            <span className="badge badge-purple">Faculty Portal</span>
-            <h3>Faculty Workspace</h3>
-            <p>Manage course rosters, grade submissions, record lecture attendance, and publish syllabus updates.</p>
-            <RouterLink to="/faculty" className="role-card-link">
-              <span>Enter Faculty View</span>
-              <Icon name="arrowRight" size={16} />
-            </RouterLink>
-          </div>
-
-          <div className="role-card glass-panel">
-            <div className="role-icon-wrap cyan">
-              <Icon name="admin" size={28} />
-            </div>
-            <span className="badge badge-cyan">Admin Console</span>
-            <h3>Admin Governance</h3>
-            <p>University-wide analytics, department configuration, fee management, and system health monitoring.</p>
-            <RouterLink to="/admin" className="role-card-link">
-              <span>Enter Admin View</span>
-              <Icon name="arrowRight" size={16} />
-            </RouterLink>
-          </div>
-        </div>
-      </section>
-
-      {/* Feature Showcase Grid */}
-      <section className="section-block">
-        <div className="section-header">
-          <span className="section-subtitle">Feature Overview</span>
-          <h2 className="section-title">Everything You Need in One Unified Shell</h2>
+        <div className="feature-block">
+          <Icon name="attendance" size={24} className="feature-icon" />
+          <h3>Smart Attendance</h3>
+          <p>Automated threshold monitoring and intelligent prediction algorithms for lecture tracking.</p>
         </div>
 
-        <div className="features-grid">
-          <div className="feature-card">
-            <Icon name="uniAi" size={24} className="feature-icon glow-cyan" />
-            <h4>UniAI Copilot</h4>
-            <p>Context-aware assistant for schedule queries, exam reminders, and campus navigation guidance.</p>
-          </div>
-
-          <div className="feature-card">
-            <Icon name="attendance" size={24} className="feature-icon glow-emerald" />
-            <h4>Smart Attendance</h4>
-            <p>Real-time attendance logging with threshold alerts, percentage analytics, and medical leave waivers.</p>
-          </div>
-
-          <div className="feature-card">
-            <Icon name="digitalId" size={24} className="feature-icon glow-purple" />
-            <h4>Digital Student ID</h4>
-            <p>Instant NFC/QR pass for library checkout, cafeteria payments, and campus gate entry verification.</p>
-          </div>
-
-          <div className="feature-card">
-            <Icon name="campusMap" size={24} className="feature-icon glow-amber" />
-            <h4>Interactive Campus Map</h4>
-            <p>Wayfinding for lecture halls, laboratories, administrative offices, and live shuttle location tracking.</p>
-          </div>
-
-          <div className="feature-card">
-            <Icon name="exams" size={24} className="feature-icon glow-rose" />
-            <h4>Exam Hall Tickets</h4>
-            <p>Automated admit card generation, seating location finder, and instant grade publish notifications.</p>
-          </div>
-
-          <div className="feature-card">
-            <Icon name="complaints" size={24} className="feature-icon glow-blue" />
-            <h4>Grievance Desk</h4>
-            <p>Transparent ticket tracking for hostel maintenance, IT support, and academic inquiries.</p>
-          </div>
+        <div className="feature-block">
+          <Icon name="uniAi" size={24} className="feature-icon" />
+          <h3>UniAI Copilot</h3>
+          <p>Context-aware assistant for schedule queries, exam reminders, and campus navigation.</p>
         </div>
       </section>
     </div>

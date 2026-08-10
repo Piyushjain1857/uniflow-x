@@ -2,25 +2,42 @@ import React, { useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Icon from './Icon';
 
-const mainNavigationItems = [
-  { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
-  { path: '/academics', label: 'Academics', icon: 'academics' },
-  { path: '/attendance', label: 'Attendance', icon: 'attendance', badge: '92%' },
-  { path: '/assignments', label: 'Assignments', icon: 'assignments', badge: '3' },
-  { path: '/exams', label: 'Exams', icon: 'exams' },
-  { path: '/timetable', label: 'Timetable', icon: 'timetable' },
-  { path: '/calendar', label: 'Calendar', icon: 'calendar' },
-  { path: '/campus', label: 'Campus', icon: 'campus' },
-  { path: '/events', label: 'Events', icon: 'events', badge: 'New' },
-  { path: '/clubs', label: 'Clubs', icon: 'clubs' },
-  { path: '/campus-map', label: 'Campus Map', icon: 'campusMap' },
-  { path: '/complaints', label: 'Complaints', icon: 'complaints' },
-  { path: '/uni-ai', label: 'UniAI', icon: 'uniAi', isAi: true },
-  { path: '/digital-id', label: 'Digital ID', icon: 'digitalId' },
-  { path: '/notifications', label: 'Notifications', icon: 'notifications', badge: '3' },
+const navigationGroups = [
+  {
+    title: 'OVERVIEW',
+    items: [
+      { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
+    ],
+  },
+  {
+    title: 'ACADEMICS',
+    items: [
+      { path: '/academics', label: 'Subjects', icon: 'academics' },
+      { path: '/attendance', label: 'Attendance', icon: 'attendance', badge: '82%' },
+      { path: '/assignments', label: 'Assignments', icon: 'assignments', badge: '3' },
+      { path: '/exams', label: 'Exams', icon: 'exams' },
+      { path: '/timetable', label: 'Timetable', icon: 'timetable' },
+    ],
+  },
+  {
+    title: 'CAMPUS',
+    items: [
+      { path: '/events', label: 'Events', icon: 'events', badge: 'New' },
+      { path: '/clubs', label: 'Clubs', icon: 'clubs' },
+      { path: '/campus-map', label: 'Campus Map', icon: 'campusMap' },
+      { path: '/campus', label: 'Services', icon: 'campus' },
+    ],
+  },
+  {
+    title: 'INTELLIGENCE',
+    items: [
+      { path: '/uni-ai', label: 'UniAI', icon: 'uniAi', isAi: true },
+    ],
+  },
 ];
 
-const bottomNavigationItems = [
+const bottomItems = [
+  { path: '/notifications', label: 'Notifications', icon: 'notifications', badge: '3' },
   { path: '/profile', label: 'Profile', icon: 'profile' },
   { path: '/settings', label: 'Settings', icon: 'settings' },
 ];
@@ -28,7 +45,6 @@ const bottomNavigationItems = [
 export function Sidebar({ isOpen = false, isCollapsed = false, onClose, onToggleCollapse }) {
   const location = useLocation();
 
-  // Keyboard Esc key handling for mobile drawer dismissal
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && isOpen && onClose) {
@@ -43,18 +59,17 @@ export function Sidebar({ isOpen = false, isCollapsed = false, onClose, onToggle
 
   return (
     <>
-      {/* Mobile Drawer Backdrop */}
       {isOpen && <div className="sidebar-backdrop" onClick={onClose} aria-hidden="true" />}
 
       <aside
         className={`sidebar ${isOpen ? 'sidebar-open' : ''} ${isCollapsed ? 'sidebar-collapsed' : ''}`}
         aria-label="Main Navigation Sidebar"
       >
-        {/* Sidebar Brand Header */}
+        {/* Brand Header */}
         <div className="sidebar-header">
           <NavLink to="/dashboard" className="sidebar-brand" onClick={onClose}>
             <span className="brand-logo-icon">
-              <Icon name="sparkles" size={20} />
+              <Icon name="sparkles" size={18} />
             </span>
             {!isCollapsed && (
               <span className="brand-title">
@@ -68,35 +83,39 @@ export function Sidebar({ isOpen = false, isCollapsed = false, onClose, onToggle
           </button>
         </div>
 
-        {/* Scrollable Navigation Menu */}
+        {/* Scrollable Groups */}
         <div className="sidebar-scroll">
-          <nav className="sidebar-nav">
-            <span className="sidebar-section-label">{!isCollapsed && 'Navigation'}</span>
-            {mainNavigationItems.map((item) => {
-              const isActive = location.pathname === item.path;
-              return (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  onClick={onClose}
-                  className={`sidebar-link ${isActive ? 'active' : ''} ${item.isAi ? 'ai-link' : ''}`}
-                  title={isCollapsed ? item.label : undefined}
-                >
-                  <Icon name={item.icon} size={18} />
-                  {!isCollapsed && <span className="sidebar-link-text">{item.label}</span>}
-                  {!isCollapsed && item.badge && (
-                    <span className={`sidebar-badge ${item.isAi ? 'badge-ai' : ''}`}>{item.badge}</span>
-                  )}
-                </NavLink>
-              );
-            })}
-          </nav>
+          {navigationGroups.map((group) => (
+            <div key={group.title} className="sidebar-group">
+              {!isCollapsed && <span className="sidebar-section-label">{group.title}</span>}
+              <nav className="sidebar-nav">
+                {group.items.map((item) => {
+                  const isActive = location.pathname === item.path;
+                  return (
+                    <NavLink
+                      key={item.path}
+                      to={item.path}
+                      onClick={onClose}
+                      className={`sidebar-link ${isActive ? 'active' : ''} ${item.isAi ? 'ai-link' : ''}`}
+                      title={isCollapsed ? item.label : undefined}
+                    >
+                      <Icon name={item.icon} size={16} />
+                      {!isCollapsed && <span className="sidebar-link-text">{item.label}</span>}
+                      {!isCollapsed && item.badge && (
+                        <span className={`sidebar-badge ${item.isAi ? 'badge-ai' : ''}`}>{item.badge}</span>
+                      )}
+                    </NavLink>
+                  );
+                })}
+              </nav>
+            </div>
+          ))}
         </div>
 
-        {/* Pinned Bottom Section: Profile & Settings & Collapse Toggle */}
+        {/* Bottom Pinned Items */}
         <div className="sidebar-footer">
           <nav className="sidebar-bottom-nav">
-            {bottomNavigationItems.map((item) => {
+            {bottomItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
                 <NavLink
@@ -106,25 +125,28 @@ export function Sidebar({ isOpen = false, isCollapsed = false, onClose, onToggle
                   className={`sidebar-link ${isActive ? 'active' : ''}`}
                   title={isCollapsed ? item.label : undefined}
                 >
-                  <Icon name={item.icon} size={18} />
+                  <Icon name={item.icon} size={16} />
                   {!isCollapsed && <span className="sidebar-link-text">{item.label}</span>}
+                  {!isCollapsed && item.badge && (
+                    <span className="sidebar-badge">{item.badge}</span>
+                  )}
                 </NavLink>
               );
             })}
           </nav>
 
-          {/* User Profile Mini Pill */}
+          {/* Student Profile Mini Card */}
           <div className="user-mini-card">
-            <div className="avatar-circle">PX</div>
+            <div className="avatar-circle">PJ</div>
             {!isCollapsed && (
               <div className="user-info">
-                <span className="user-name">Alex Vance</span>
-                <span className="user-role">CS Senior</span>
+                <span className="user-name">Piyush Jain</span>
+                <span className="user-role">B.Tech CSE • Sem 4</span>
               </div>
             )}
           </div>
 
-          {/* Desktop/Tablet Sidebar Collapse Toggle */}
+          {/* Collapse Toggle Button */}
           {onToggleCollapse && (
             <button
               onClick={onToggleCollapse}
@@ -132,8 +154,8 @@ export function Sidebar({ isOpen = false, isCollapsed = false, onClose, onToggle
               aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
-              <Icon name={isCollapsed ? 'chevronRight' : 'close'} size={16} />
-              {!isCollapsed && <span className="collapse-text">Collapse Menu</span>}
+              <Icon name={isCollapsed ? 'chevronRight' : 'close'} size={14} />
+              {!isCollapsed && <span className="collapse-text">Collapse</span>}
             </button>
           )}
         </div>
