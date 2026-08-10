@@ -17,15 +17,20 @@ export function Topbar({ onToggleSidebar }) {
   return (
     <header className="topbar">
       <div className="topbar-left">
-        <button className="mobile-menu-toggle" onClick={onToggleSidebar} aria-label="Toggle navigation menu">
+        <button
+          className="mobile-menu-toggle"
+          onClick={onToggleSidebar}
+          aria-label="Toggle navigation drawer"
+        >
           <Icon name="menu" size={22} />
         </button>
 
+        {/* Search Input */}
         <div className="topbar-search">
           <Icon name="search" size={16} className="search-icon" />
           <input
             type="text"
-            placeholder="Search courses, exams, campus events or ask UniAI..."
+            placeholder="Search courses, exams, campus events..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
@@ -35,9 +40,9 @@ export function Topbar({ onToggleSidebar }) {
       </div>
 
       <div className="topbar-right">
-        {/* Role Mode Simulator */}
+        {/* Role Switcher Pill */}
         <div className="role-switcher-pill">
-          <span className="role-switcher-label">View Mode:</span>
+          <span className="role-switcher-label">View:</span>
           <button
             className={`role-btn ${activeRole === 'Student' ? 'active' : ''}`}
             onClick={() => handleRoleChange('Student')}
@@ -60,25 +65,20 @@ export function Topbar({ onToggleSidebar }) {
 
         {/* UniAI Quick Action */}
         <Link to="/uni-ai" className="topbar-action-btn ai-btn" title="Open UniAI Assistant">
-          <Icon name="sparkles" size={18} />
+          <Icon name="sparkles" size={16} />
           <span className="ai-btn-text">UniAI</span>
         </Link>
 
-        {/* Notifications */}
+        {/* Notification Bell with Badge Placeholder */}
         <Link to="/notifications" className="topbar-action-btn notification-btn" title="Notifications">
           <Icon name="notifications" size={18} />
-          <span className="notification-dot" />
+          <span className="notification-badge-count">3</span>
         </Link>
 
-        {/* User Pill / Profile */}
-        <Link to="/profile" className="topbar-user-pill">
+        {/* User Avatar Placeholder */}
+        <Link to="/profile" className="topbar-user-pill" title="User Profile">
           <div className="user-avatar-sm">PX</div>
-          <span className="user-name-sm">Alex V.</span>
-        </Link>
-
-        {/* Exit shell back to public landing */}
-        <Link to="/" className="topbar-action-btn exit-btn" title="Back to Public Landing Shell">
-          <Icon name="externalLink" size={16} />
+          <span className="user-name-sm">Alex Vance</span>
         </Link>
       </div>
     </header>
