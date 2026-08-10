@@ -1,0 +1,12 @@
+# Mobile App Dependencies & Expo Cache
+node_modules/
+.expo/
+.expo-shared/
+web-build/
+
+# Environment Variables
+.env
+.env.local
+
+# OS
+.DS_Store

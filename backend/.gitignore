@@ -1,0 +1,16 @@
+# Python & FastAPI Cache
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment Variables
+.env
+
+# OS
+.DS_Store
