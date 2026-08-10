@@ -10,7 +10,7 @@ export function Landing() {
     <div className="v2-landing-page">
       {/* Top Navbar */}
       <header className="v2-landing-nav">
-        <div className="v2-brand-link">
+        <Link to="/" className="v2-brand-link">
           <div className="v2-brand-mark">
             <Icon name="sparkles" size={16} />
           </div>
@@ -18,7 +18,7 @@ export function Landing() {
             <span className="brand-uniflow">UNIFLOW</span>
             <span className="brand-x">X</span>
           </div>
-        </div>
+        </Link>
 
         <nav className="landing-links desktop-only">
           <Link to="/dashboard" className="link-item">Product</Link>
@@ -125,6 +125,57 @@ export function Landing() {
           Get Started with UniFlow X
         </Link>
       </section>
+
+      {/* Polished Landing Footer */}
+      <footer className="v2-landing-footer">
+        <div className="footer-container">
+          <div className="footer-brand-col">
+            <div className="v2-brand-link">
+              <div className="v2-brand-mark">
+                <Icon name="sparkles" size={14} />
+              </div>
+              <div className="v2-brand-text">
+                <span className="brand-uniflow">UNIFLOW</span>
+                <span className="brand-x">X</span>
+              </div>
+            </div>
+            <p className="footer-tagline">
+              AI-powered Digital Operating System for Universities.
+            </p>
+            <div className="system-status-badge">
+              <span className="status-dot green" />
+              <span>All Systems Operational</span>
+            </div>
+          </div>
+
+          <div className="footer-links-grid">
+            <div className="footer-col">
+              <h4>Product</h4>
+              <Link to="/dashboard">Dashboard</Link>
+              <Link to="/academics">Academics</Link>
+              <Link to="/uni-ai">UniAI</Link>
+              <Link to="/campus">Campus</Link>
+            </div>
+
+            <div className="footer-col">
+              <h4>Account</h4>
+              <Link to="/login">Sign In</Link>
+              <Link to="/register">Register</Link>
+            </div>
+
+            <div className="footer-col">
+              <h4>Company</h4>
+              <Link to="/">About</Link>
+              <Link to="/">Privacy</Link>
+              <Link to="/">Terms</Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="footer-bottom-bar">
+          <span>© 2026 UniFlow X Inc. All rights reserved.</span>
+        </div>
+      </footer>
     </div>
   );
 }
