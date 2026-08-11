@@ -59,9 +59,9 @@ export function Timetable() {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--surface-1)', borderRadius: 8, padding: 4, border: '1px solid var(--border)' }}>
-            <Button variant="ghost" style={{ padding: '6px 8px' }}><Icon name="chevronLeft" size={16} /></Button>
+            <Button variant="ghost" icon="chevronLeft" style={{ padding: '6px 8px' }} />
             <span style={{ fontSize: 13, fontWeight: 700, padding: '0 12px' }}>Aug 10–16</span>
-            <Button variant="ghost" style={{ padding: '6px 8px' }}><Icon name="chevronRight" size={16} /></Button>
+            <Button variant="ghost" icon="chevronRight" style={{ padding: '6px 8px' }} />
           </div>
           <div style={{ display: 'flex', backgroundColor: 'var(--surface-2)', borderRadius: 8, padding: 4 }}>
             <Button variant="ghost" style={{ padding: '6px 12px', fontSize: 13, backgroundColor: 'var(--surface-3)' }}>Day</Button>

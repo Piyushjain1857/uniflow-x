@@ -131,13 +131,11 @@ export function Profile() {
           <p className="v2-subtitle">Manage your identity and preferences</p>
         </div>
         <div className="page-header-actions">
-          <Button variant="secondary" onClick={() => setIsPasswordModalOpen(true)}>
-            <Icon name="lock" size={16} />
-            <span>Change Password</span>
+          <Button variant="secondary" icon="lock" onClick={() => setIsPasswordModalOpen(true)}>
+            Change Password
           </Button>
-          <Button variant="primary" onClick={() => setIsEditModalOpen(true)}>
-            <Icon name="edit" size={16} />
-            <span>Edit Profile</span>
+          <Button variant="primary" icon="edit" onClick={() => setIsEditModalOpen(true)}>
+            Edit Profile
           </Button>
         </div>
       </div>
@@ -256,9 +254,8 @@ export function Profile() {
       </div>
 
       <div style={{ marginTop: 40, marginBottom: 40 }}>
-        <Button variant="outline" style={{ color: 'var(--danger)', borderColor: 'var(--danger)' }} onClick={logout}>
-          <Icon name="logout" size={16} />
-          <span>Sign Out of Session</span>
+        <Button variant="outline" icon="logout" style={{ color: 'var(--danger)', borderColor: 'var(--danger)' }} onClick={logout}>
+          Sign Out of Session
         </Button>
       </div>
 

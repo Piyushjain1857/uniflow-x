@@ -234,8 +234,8 @@ export function Assignments() {
                   </div>
 
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 }}>
-                    <Button variant="ghost" type="button" onClick={() => document.getElementById('file-upload').click()} disabled={isSubmitting}>
-                      <Icon name="attendance" size={16} /> Attach File
+                    <Button variant="ghost" type="button" icon="attendance" onClick={() => document.getElementById('file-upload').click()} disabled={isSubmitting}>
+                      Attach File
                       <input id="file-upload" type="file" style={{ display: 'none' }} />
                     </Button>
                     <div style={{ display: 'flex', gap: 12 }}>

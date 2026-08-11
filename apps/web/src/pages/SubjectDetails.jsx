@@ -36,9 +36,8 @@ export function SubjectDetails() {
   return (
     <PageContainer>
       <div style={{ marginBottom: 24 }}>
-        <Button variant="ghost" onClick={() => navigate('/academics')} style={{ padding: '8px 0' }}>
-          <Icon name="chevronLeft" size={16} />
-          <span>Back to Academics</span>
+        <Button variant="ghost" icon="chevronLeft" onClick={() => navigate('/academics')} style={{ padding: '8px 0' }}>
+          Back to Academics
         </Button>
       </div>
 
@@ -146,9 +145,7 @@ export function SubjectDetails() {
                       <div style={{ fontWeight: 600, color: 'var(--text)', fontSize: 14 }}>{m.title}</div>
                       <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', marginTop: 2 }}>{m.type} • {m.date}</div>
                     </div>
-                    <Button variant="ghost" style={{ padding: 8 }}>
-                      <Icon name="chevronRight" size={16} />
-                    </Button>
+                    <Button variant="ghost" icon="chevronRight" style={{ padding: 8 }} />
                   </div>
                 ))}
               </div>

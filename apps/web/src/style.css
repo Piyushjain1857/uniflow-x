@@ -347,6 +347,80 @@ ul, ol {
   }
 }
 
+/* --- CAMPUS MAP MODULE --- */
+.campus-map-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background-color: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.map-building {
+  position: absolute;
+  background-color: var(--surface-3);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.map-building:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  transform: scale(1.02);
+  z-index: 10;
+}
+
+.map-building-text {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+  pointer-events: none;
+}
+
+.map-controls {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 20;
+}
+
+.map-ctrl-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.map-ctrl-btn:hover {
+  background-color: var(--surface-3);
+}
+
 .v2-badge-dot {
   position: absolute;
   top: 6px;
