@@ -250,6 +250,103 @@ ul, ol {
   cursor: pointer;
 }
 
+/* --- TIMETABLE MODULE --- */
+.tt-desktop-view {
+  display: block;
+}
+.tt-mobile-view {
+  display: none;
+}
+
+.tt-grid-container {
+  display: grid;
+  grid-template-columns: 80px repeat(6, 1fr);
+  grid-template-rows: 40px repeat(8, 80px);
+  gap: 1px;
+  background-color: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tt-grid-cell {
+  background-color: var(--surface-1);
+  padding: 8px;
+  position: relative;
+}
+
+.tt-grid-header {
+  background-color: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.tt-time-label {
+  background-color: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.tt-class-card {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-left: 4px solid var(--primary);
+  background-color: var(--surface-2);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.tt-class-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.tt-class-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.tt-class-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.tt-active-class {
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+}
+
+@media (max-width: 768px) {
+  .tt-desktop-view {
+    display: none;
+  }
+  .tt-mobile-view {
+    display: block;
+  }
+}
+
 .v2-badge-dot {
   position: absolute;
   top: 6px;
