@@ -15,7 +15,7 @@ export default function RegisterScreen() {
   const router = useRouter();
 
   const handleRegister = () => {
-    router.replace('/(app)/(tabs)/home');
+    router.replace('/home');
   };
 
   return (
@@ -99,8 +99,8 @@ export default function RegisterScreen() {
 
         <View style={styles.footerLinkWrap}>
           <Text style={styles.footerText}>Already registered? </Text>
-          <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
-            <Text style={styles.linkHighlight}>Sign In Here</Text>
+          <TouchableOpacity onPress={() => router.push('/login')}>
+            <Text style={styles.linkHighlight}>Sign In</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

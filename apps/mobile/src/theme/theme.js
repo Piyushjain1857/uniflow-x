@@ -94,6 +94,9 @@ export const COLORS = DARK_COLORS;
 
 export const SHADOWS = {
   small: Platform.select({
+    web: {
+      boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.15)',
+    },
     ios: {
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 2 },
@@ -103,8 +106,12 @@ export const SHADOWS = {
     android: {
       elevation: 2,
     },
-  }),
+    default: {},
+  }) || {},
   medium: Platform.select({
+    web: {
+      boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
+    },
     ios: {
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 4 },
@@ -114,8 +121,12 @@ export const SHADOWS = {
     android: {
       elevation: 5,
     },
-  }),
+    default: {},
+  }) || {},
   large: Platform.select({
+    web: {
+      boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.3)',
+    },
     ios: {
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 8 },
@@ -125,5 +136,6 @@ export const SHADOWS = {
     android: {
       elevation: 10,
     },
-  }),
+    default: {},
+  }) || {},
 };

@@ -17,22 +17,22 @@ export default function CampusScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         {/* Quick Nav Chips */}
         <View style={styles.navRow}>
-          <TouchableOpacity style={styles.chip} onPress={() => router.push('/(app)/events')}>
+          <TouchableOpacity style={styles.chip} onPress={() => router.push('/events')}>
             <Icon name="events" size={16} color={COLORS.accentPurple} />
             <Text style={styles.chipText}>Events</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.chip} onPress={() => router.push('/(app)/clubs')}>
+          <TouchableOpacity style={styles.chip} onPress={() => router.push('/clubs')}>
             <Icon name="clubs" size={16} color={COLORS.accentIndigo} />
             <Text style={styles.chipText}>Clubs</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.chip} onPress={() => router.push('/(app)/campus-map')}>
+          <TouchableOpacity style={styles.chip} onPress={() => router.push('/campus-map')}>
             <Icon name="campusMap" size={16} color={COLORS.primary} />
             <Text style={styles.chipText}>Campus Map</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.chip} onPress={() => router.push('/(app)/complaints')}>
+          <TouchableOpacity style={styles.chip} onPress={() => router.push('/complaints')}>
             <Icon name="complaints" size={16} color={COLORS.accentRose} />
             <Text style={styles.chipText}>Helpdesk</Text>
           </TouchableOpacity>

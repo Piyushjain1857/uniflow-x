@@ -1,4 +1,5 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { COLORS } from '../theme/theme';
 
@@ -27,7 +28,31 @@ const iconPaths = {
 };
 
 export function Icon({ name, size = 22, color = COLORS.textMain }) {
-  const d = iconPaths[name] || iconPaths.home;
+  if (React.isValidElement(name)) {
+    return name;
+  }
+  if (typeof name === 'function') {
+    const IconComp = name;
+    return <IconComp size={size} color={color} />;
+  }
+
+  const iconName = typeof name === 'string' ? name : 'home';
+  const d = iconPaths[iconName] || iconPaths.home;
+
+  if (Platform.OS === 'web') {
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+        <path
+          d={d}
+          stroke={color}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+  }
+
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path

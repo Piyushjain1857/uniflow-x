@@ -40,39 +40,38 @@ export default function ForgotPasswordScreen() {
                 title="Back to Sign In"
                 variant="primary"
                 onPress={() => router.push('/(auth)/login')}
+                onPress={() => router.push('/login')}
                 style={{ width: '100%', marginTop: 14 }}
               />
             </View>
           ) : (
-            <>
-              <View style={styles.formGroup}>
-                <Text style={styles.label}>Registered Email</Text>
-                <View style={styles.inputWrap}>
-                  <Icon name="profile" size={18} color={COLORS.textDim} />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="student@university.edu"
-                    placeholderTextColor={COLORS.textDim}
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                  />
-                </View>
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Registered Email / NetID</Text>
+              <View style={styles.inputWrap}>
+                <Icon name="profile" size={18} color={COLORS.textDim} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="student@university.edu"
+                  placeholderTextColor={COLORS.textDim}
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
               </View>
 
               <Button
-                title="Send Recovery Key"
+                title="Send Recovery Instructions"
                 icon="arrowRight"
                 variant="primary"
                 onPress={handleReset}
                 style={styles.submitBtn}
               />
-            </>
+            </View>
           )}
         </View>
 
-        <TouchableOpacity style={styles.backLink} onPress={() => router.push('/(auth)/login')}>
+        <TouchableOpacity style={styles.backLink} onPress={() => router.push('/login')}>
           <Text style={styles.backLinkText}>Return to Sign In</Text>
         </TouchableOpacity>
       </View>

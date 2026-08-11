@@ -7,15 +7,15 @@ import Icon from '../../../src/components/Icon';
 import Card from '../../../src/components/Card';
 
 const quickGridItems = [
-  { name: 'Attendance', route: '/(app)/attendance', icon: 'attendance', color: COLORS.accentEmerald },
-  { name: 'Assignments', route: '/(app)/assignments', icon: 'assignments', color: COLORS.accentAmber },
-  { name: 'Exams', route: '/(app)/exams', icon: 'exams', color: COLORS.accentRose },
-  { name: 'Timetable', route: '/(app)/timetable', icon: 'timetable', color: COLORS.primary },
-  { name: 'Events', route: '/(app)/events', icon: 'events', color: COLORS.accentPurple },
-  { name: 'Clubs', route: '/(app)/clubs', icon: 'clubs', color: COLORS.accentIndigo },
-  { name: 'Campus Map', route: '/(app)/campus-map', icon: 'campusMap', color: COLORS.primary },
-  { name: 'Complaints', route: '/(app)/complaints', icon: 'complaints', color: COLORS.accentRose },
-  { name: 'Digital ID', route: '/(app)/digital-id', icon: 'digitalId', color: COLORS.accentEmerald },
+  { name: 'Attendance', route: '/attendance', icon: 'attendance', color: COLORS.accentEmerald },
+  { name: 'Assignments', route: '/assignments', icon: 'assignments', color: COLORS.accentAmber },
+  { name: 'Exams', route: '/exams', icon: 'exams', color: COLORS.accentRose },
+  { name: 'Timetable', route: '/timetable', icon: 'timetable', color: COLORS.primary },
+  { name: 'Events', route: '/events', icon: 'events', color: COLORS.accentPurple },
+  { name: 'Clubs', route: '/clubs', icon: 'clubs', color: COLORS.accentIndigo },
+  { name: 'Campus Map', route: '/campus-map', icon: 'campusMap', color: COLORS.primary },
+  { name: 'Complaints', route: '/complaints', icon: 'complaints', color: COLORS.accentRose },
+  { name: 'Digital ID', route: '/digital-id', icon: 'digitalId', color: COLORS.accentEmerald },
 ];
 
 export default function HomeScreen() {
@@ -39,7 +39,7 @@ export default function HomeScreen() {
           <View style={styles.headerActions}>
             <TouchableOpacity
               style={styles.iconBtn}
-              onPress={() => router.push('/(app)/notifications')}
+              onPress={() => router.push('/notifications')}
             >
               <Icon name="notifications" size={20} color={COLORS.textMain} />
               <View style={styles.redDot} />
@@ -47,7 +47,7 @@ export default function HomeScreen() {
 
             <TouchableOpacity
               style={styles.iconBtn}
-              onPress={() => router.push('/(app)/settings')}
+              onPress={() => router.push('/settings')}
             >
               <Icon name="settings" size={20} color={COLORS.textMain} />
             </TouchableOpacity>
@@ -79,7 +79,7 @@ export default function HomeScreen() {
         <TouchableOpacity
           activeOpacity={0.8}
           style={styles.aiTeaserCard}
-          onPress={() => router.push('/(app)/(tabs)/uni-ai')}
+          onPress={() => router.push('/uni-ai')}
         >
           <View style={styles.aiIconBox}>
             <Icon name="sparkles" size={22} color="#000" />

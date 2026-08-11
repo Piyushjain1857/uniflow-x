@@ -8,23 +8,7 @@ export default function AppLayout() {
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: COLORS.bgDark },
-        animation: 'slide_from_right',
       }}
-    >
-      <Stack.Screen name="(tabs)" />
-      
-      {/* Secondary Screens */}
-      <Stack.Screen name="attendance" />
-      <Stack.Screen name="assignments" />
-      <Stack.Screen name="exams" />
-      <Stack.Screen name="timetable" />
-      <Stack.Screen name="events" />
-      <Stack.Screen name="clubs" />
-      <Stack.Screen name="campus-map" />
-      <Stack.Screen name="complaints" />
-      <Stack.Screen name="digital-id" />
-      <Stack.Screen name="notifications" />
-      <Stack.Screen name="settings" />
-    </Stack>
+    />
   );
 }

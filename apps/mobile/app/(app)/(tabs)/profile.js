@@ -27,7 +27,7 @@ export default function ProfileScreen() {
 
           <TouchableOpacity
             style={styles.digitalIdBtn}
-            onPress={() => router.push('/(app)/digital-id')}
+            onPress={() => router.push('/digital-id')}
           >
             <Icon name="digitalId" size={18} color="#000" />
             <Text style={styles.digitalIdBtnText}>Open Digital Student ID</Text>
@@ -37,19 +37,19 @@ export default function ProfileScreen() {
         {/* Quick Menu Options */}
         <Text style={styles.sectionTitle}>Account & Preferences</Text>
 
-        <TouchableOpacity style={styles.menuRow} onPress={() => router.push('/(app)/digital-id')}>
+        <TouchableOpacity style={styles.menuRow} onPress={() => router.push('/digital-id')}>
           <Icon name="digitalId" size={20} color={COLORS.primary} />
           <Text style={styles.menuLabel}>Digital ID Card & NFC Pass</Text>
           <Icon name="chevronRight" size={18} color={COLORS.textDim} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuRow} onPress={() => router.push('/(app)/notifications')}>
+        <TouchableOpacity style={styles.menuRow} onPress={() => router.push('/notifications')}>
           <Icon name="notifications" size={20} color={COLORS.accentPurple} />
           <Text style={styles.menuLabel}>Push Notification Center</Text>
           <Icon name="chevronRight" size={18} color={COLORS.textDim} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuRow} onPress={() => router.push('/(app)/settings')}>
+        <TouchableOpacity style={styles.menuRow} onPress={() => router.push('/settings')}>
           <Icon name="settings" size={20} color={COLORS.accentIndigo} />
           <Text style={styles.menuLabel}>App Settings & Security</Text>
           <Icon name="chevronRight" size={18} color={COLORS.textDim} />
@@ -59,7 +59,7 @@ export default function ProfileScreen() {
         <Button
           title="Sign Out of Session"
           variant="secondary"
-          onPress={() => router.replace('/(auth)/login')}
+          onPress={() => router.replace('/login')}
           style={{ marginTop: 24 }}
         />
       </ScrollView>

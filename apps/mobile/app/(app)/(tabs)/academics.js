@@ -26,7 +26,7 @@ export default function AcademicsScreen() {
         <View style={styles.navRow}>
           <TouchableOpacity
             style={styles.chip}
-            onPress={() => router.push('/(app)/attendance')}
+            onPress={() => router.push('/attendance')}
           >
             <Icon name="attendance" size={16} color={COLORS.accentEmerald} />
             <Text style={styles.chipText}>Attendance</Text>
@@ -34,7 +34,7 @@ export default function AcademicsScreen() {
 
           <TouchableOpacity
             style={styles.chip}
-            onPress={() => router.push('/(app)/assignments')}
+            onPress={() => router.push('/assignments')}
           >
             <Icon name="assignments" size={16} color={COLORS.accentAmber} />
             <Text style={styles.chipText}>Assignments</Text>
@@ -42,7 +42,7 @@ export default function AcademicsScreen() {
 
           <TouchableOpacity
             style={styles.chip}
-            onPress={() => router.push('/(app)/exams')}
+            onPress={() => router.push('/exams')}
           >
             <Icon name="exams" size={16} color={COLORS.accentRose} />
             <Text style={styles.chipText}>Exams</Text>

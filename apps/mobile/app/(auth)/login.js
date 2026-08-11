@@ -14,7 +14,7 @@ export default function LoginScreen() {
 
   const handleLogin = () => {
     // Navigate into main app
-    router.replace('/(app)/(tabs)/home');
+    router.replace('/home');
   };
 
   return (
@@ -76,7 +76,7 @@ export default function LoginScreen() {
           <View style={styles.formGroup}>
             <View style={styles.labelRow}>
               <Text style={styles.label}>Security Password</Text>
-              <TouchableOpacity onPress={() => router.push('/(auth)/forgot-password')}>
+              <TouchableOpacity onPress={() => router.push('/forgot-password')}>
                 <Text style={styles.forgotLink}>Forgot?</Text>
               </TouchableOpacity>
             </View>
@@ -98,21 +98,20 @@ export default function LoginScreen() {
             icon="arrowRight"
             variant="primary"
             onPress={handleLogin}
-            style={styles.submitBtn}
+            style={{ marginTop: 24 }}
           />
+
+          <View style={styles.registerRow}>
+            <Text style={styles.registerText}>Don't have a campus account?</Text>
+            <TouchableOpacity onPress={() => router.push('/register')}>
+              <Text style={styles.registerLink}>Register</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
-        <View style={styles.footerLinkWrap}>
-          <Text style={styles.footerText}>New to UniFlow X? </Text>
-          <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
-            <Text style={styles.linkHighlight}>Register Account</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Quick Demo Launch */}
         <TouchableOpacity
-          style={styles.skipBtn}
-          onPress={() => router.replace('/(app)/(tabs)/home')}
+          style={styles.demoFastBtn}
+          onPress={() => router.replace('/home')}
         >
           <Text style={styles.skipText}>Skip Login (Demo Mode)</Text>
           <Icon name="chevronRight" size={14} color={COLORS.primary} />
