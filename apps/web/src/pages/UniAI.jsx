@@ -1,58 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PageContainer from '../components/PageContainer';
 import Icon from '../components/Icon';
-import { mockData } from '../data/mockData';
+import { generateAIResponse, quickPrompts } from '@uniflow-x/utils/uniai';
 
 export function UniAI() {
-  const { aiSuggestedPrompts } = mockData;
   const [activeHistoryId, setActiveHistoryId] = useState('h1');
   const [inputVal, setInputVal] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const scrollRef = useRef(null);
   
   const [messages, setMessages] = useState([
     {
       id: 'm1',
-      sender: 'user',
-      text: "What's on my schedule today?",
-      time: '08:55 AM',
-    },
-    {
-      id: 'm2',
       sender: 'ai',
-      text: "Good morning, Piyush. Here's what's on your schedule today.",
-      time: '08:55 AM',
-      scheduleItems: [
-        { time: '09:00 AM', subject: 'Data Structures', room: 'Room 204', faculty: 'Dr. Aris Thorne' },
-        { time: '11:00 AM', subject: 'Discrete Mathematics', room: 'Room 302', faculty: 'Prof. Elena Rostova' },
-        { time: '02:00 PM', subject: 'Web Development', room: 'Lab 3', faculty: 'Dr. Marcus Vance' },
-      ],
-      noticeText: 'You also have 1 pending coursework assignment (React Auth) due tomorrow.',
-    },
+      text: "Hello Piyush! I am UniAI, your context-aware campus assistant. How can I help you today?",
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    }
   ]);
 
-  const handleSend = (e) => {
-    e.preventDefault();
-    if (!inputVal.trim()) return;
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages, isTyping]);
 
-    const newMsg = { id: Date.now().toString(), sender: 'user', text: inputVal, time: 'Just now' };
-    const replyMsg = {
-      id: (Date.now() + 1).toString(),
-      sender: 'ai',
-      text: `I checked your academic records for "${inputVal}". Your schedule, attendance (82%), and course syllabi are synchronized.`,
-      time: 'Just now',
+  const handleSend = async (e, textOverride = null) => {
+    if (e) e.preventDefault();
+    const query = textOverride !== null ? textOverride : inputVal;
+    if (!query.trim()) return;
+
+    const newMsg = { 
+      id: Date.now().toString(), 
+      sender: 'user', 
+      text: query, 
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
     };
-
-    setMessages((prev) => [...prev, newMsg, replyMsg]);
+    
+    setMessages((prev) => [...prev, newMsg]);
     setInputVal('');
+    setIsTyping(true);
+
+    try {
+      const response = await generateAIResponse(query);
+      const replyMsg = {
+        id: (Date.now() + 1).toString(),
+        sender: 'ai',
+        text: response.text,
+        scheduleItems: response.scheduleItems,
+        noticeText: response.noticeText,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+      setMessages((prev) => [...prev, replyMsg]);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsTyping(false);
+    }
+  };
+
+  const handleNewChat = () => {
+    setMessages([
+      {
+        id: Date.now().toString(),
+        sender: 'ai',
+        text: "Started a new conversation. What's on your mind?",
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      }
+    ]);
   };
 
   const historyToday = [
-    { id: 'h1', title: 'Schedule & Assignments', time: '10 min ago', icon: 'timetable' },
-    { id: 'h2', title: 'Attendance Check', time: '2 hrs ago', icon: 'attendance' },
+    { id: 'h1', title: 'Schedule & Assignments', icon: 'timetable' },
+    { id: 'h2', title: 'Attendance Check', icon: 'attendance' },
   ];
 
   const historyYesterday = [
-    { id: 'h3', title: 'Data Structures Syllabus', time: 'Yesterday', icon: 'academics' },
-    { id: 'h4', title: 'Library Hours & Access', time: 'Yesterday', icon: 'campusMap' },
+    { id: 'h3', title: 'Data Structures Syllabus', icon: 'academics' },
+    { id: 'h4', title: 'Library Hours & Access', icon: 'campusMap' },
   ];
 
   return (
@@ -66,7 +91,7 @@ export function UniAI() {
               <Icon name="uniAi" size={16} />
               <span className="brand-title">UniAI</span>
             </div>
-            <button className="btn btn-secondary sm-btn ai-new-chat-btn" onClick={() => setMessages([])}>
+            <button className="btn btn-secondary sm-btn ai-new-chat-btn" onClick={handleNewChat}>
               + New chat
             </button>
           </div>
@@ -121,7 +146,7 @@ export function UniAI() {
           </header>
 
           {/* Conversation Stream */}
-          <div className="ai-feed-container">
+          <div className="ai-feed-container" ref={scrollRef}>
             {messages.map((msg) => (
               <div key={msg.id} className={`ai-message-row ${msg.sender === 'user' ? 'user-row' : 'ai-row'}`}>
                 {msg.sender === 'ai' && (
@@ -157,18 +182,31 @@ export function UniAI() {
                 </div>
               </div>
             ))}
+            {isTyping && (
+              <div className="ai-message-row ai-row">
+                <div className="ai-msg-avatar">
+                  <Icon name="sparkles" size={15} />
+                </div>
+                <div className="ai-msg-content">
+                  <div className="ai-msg-bubble" style={{ padding: '12px 16px' }}>
+                    <span style={{ fontStyle: 'italic', color: 'var(--text-muted)' }}>Thinking...</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Quick Prompt Chips */}
           <div className="ai-quick-prompts-bar">
             <span className="prompts-label">Quick prompts</span>
             <div className="prompts-chips-wrapper">
-              {aiSuggestedPrompts.map((prompt, idx) => (
+              {quickPrompts.map((prompt, idx) => (
                 <button
                   key={idx}
                   type="button"
                   className="prompt-chip"
-                  onClick={() => setInputVal(prompt)}
+                  onClick={() => handleSend(null, prompt)}
+                  disabled={isTyping}
                 >
                   {prompt}
                 </button>
@@ -183,12 +221,13 @@ export function UniAI() {
             </button>
             <input
               type="text"
-              placeholder="Ask anything about your university..."
+              placeholder="Ask anything..."
               value={inputVal}
               onChange={(e) => setInputVal(e.target.value)}
               className="ai-composer-input"
+              disabled={isTyping}
             />
-            <button type="submit" className="composer-send-btn" title="Send message">
+            <button type="submit" className="composer-send-btn" title="Send message" disabled={isTyping || !inputVal.trim()}>
               ↑
             </button>
           </form>
