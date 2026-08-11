@@ -1,21 +1,30 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Icon from '../../components/Icon';
+import { useAuth } from '../../context/AuthContext';
 
 export function Login() {
-  const [email, setEmail] = useState('piyush.jain@uniflow.edu');
-  const [password, setPassword] = useState('••••••••••••');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  
+  const { login, loading } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    setIsSubmitting(true);
+    setError('');
+    try {
+      await login(email, password);
       navigate('/dashboard');
-    }, 400);
+    } catch (err) {
+      setError(err.message || 'Login failed');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -67,6 +76,7 @@ export function Login() {
           <p className="form-sub">Enter your institutional email to access your workspace</p>
 
           <form onSubmit={handleLogin} className="v2-login-form">
+            {error && <div className="form-error">{error}</div>}
             <div className="v2-input-group">
               <label className="v2-label">Institutional Email</label>
               <input
@@ -86,7 +96,7 @@ export function Login() {
               </div>
               <input
                 type="password"
-                placeholder="••••••••••••"
+                placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="v2-input"
@@ -104,8 +114,8 @@ export function Login() {
               <label htmlFor="remember">Remember me on this browser</label>
             </div>
 
-            <button type="submit" className="v2-btn-primary full-width" disabled={loading}>
-              {loading ? 'Signing in...' : 'Sign in to workspace'}
+            <button type="submit" className="v2-btn-primary full-width" disabled={isSubmitting}>
+              {isSubmitting ? 'Signing in...' : 'Sign in to workspace'}
             </button>
 
             <div className="form-footer">

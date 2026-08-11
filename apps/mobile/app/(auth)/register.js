@@ -1,21 +1,36 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADII, SPACING } from '../../src/theme/theme';
 import Icon from '../../src/components/Icon';
 import Button from '../../src/components/Button';
 import Header from '../../src/components/Header';
+import { useAuth } from '../../src/context/AuthContext';
 
 export default function RegisterScreen() {
   const [fullName, setFullName] = useState('');
   const [studentId, setStudentId] = useState('');
   const [email, setEmail] = useState('');
+  const [department, setDepartment] = useState('Computer Science & Engineering');
+  const [semester, setSemester] = useState('1');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const { register } = useAuth();
 
-  const handleRegister = () => {
-    router.replace('/home');
+  const handleRegister = async () => {
+    setIsSubmitting(true);
+    setError('');
+    try {
+      await register({ fullName, studentId, email, department, semester, password, confirmPassword });
+    } catch (err) {
+      setError(err.message || 'Registration failed');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -25,9 +40,10 @@ export default function RegisterScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Create Identity</Text>
-          <Text style={styles.cardSubtitle}>
             Register your university details to activate mobile features
           </Text>
+
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
           <View style={styles.formGroup}>
             <Text style={styles.label}>Full Name</Text>
@@ -74,6 +90,35 @@ export default function RegisterScreen() {
           </View>
 
           <View style={styles.formGroup}>
+            <Text style={styles.label}>Department</Text>
+            <View style={styles.inputWrap}>
+              <Icon name="academics" size={18} color={COLORS.textDim} />
+              <TextInput
+                style={styles.input}
+                placeholder="Computer Science & Engineering"
+                placeholderTextColor={COLORS.textDim}
+                value={department}
+                onChangeText={setDepartment}
+              />
+            </View>
+          </View>
+
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Semester (1-8)</Text>
+            <View style={styles.inputWrap}>
+              <Icon name="academics" size={18} color={COLORS.textDim} />
+              <TextInput
+                style={styles.input}
+                placeholder="1"
+                placeholderTextColor={COLORS.textDim}
+                value={semester}
+                onChangeText={setSemester}
+                keyboardType="numeric"
+              />
+            </View>
+          </View>
+
+          <View style={styles.formGroup}>
             <Text style={styles.label}>Create Security Password</Text>
             <View style={styles.inputWrap}>
               <Icon name="lock" size={18} color={COLORS.textDim} />
@@ -88,13 +133,34 @@ export default function RegisterScreen() {
             </View>
           </View>
 
-          <Button
-            title="Complete Registration"
-            icon="arrowRight"
-            variant="primary"
-            onPress={handleRegister}
-            style={styles.submitBtn}
-          />
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Confirm Password</Text>
+            <View style={styles.inputWrap}>
+              <Icon name="lock" size={18} color={COLORS.textDim} />
+              <TextInput
+                style={styles.input}
+                placeholder="Re-enter password"
+                placeholderTextColor={COLORS.textDim}
+                secureTextEntry
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+              />
+            </View>
+          </View>
+
+          {isSubmitting ? (
+            <View style={{ marginTop: 10, paddingVertical: 14, alignItems: 'center' }}>
+              <ActivityIndicator color={COLORS.primary} />
+            </View>
+          ) : (
+            <Button
+              title="Complete Registration"
+              icon="arrowRight"
+              variant="primary"
+              onPress={handleRegister}
+              style={styles.submitBtn}
+            />
+          )}
         </View>
 
         <View style={styles.footerLinkWrap}>
@@ -133,6 +199,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: COLORS.textMuted,
     marginBottom: 20,
+  },
+  errorText: {
+    color: '#EF4444',
+    fontSize: 13,
+    marginBottom: 16,
+    fontWeight: '600',
   },
   formGroup: {
     marginBottom: 16,

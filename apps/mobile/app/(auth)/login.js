@@ -1,20 +1,38 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, RADII, SPACING } from '../../src/theme/theme';
 import Icon from '../../src/components/Icon';
 import Button from '../../src/components/Button';
+import { useAuth } from '../../src/context/AuthContext';
 
 export default function LoginScreen() {
   const [selectedRole, setSelectedRole] = useState('student');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
+  const { login } = useAuth();
 
-  const handleLogin = () => {
-    // Navigate into main app
-    router.replace('/home');
+  const handleLogin = async () => {
+    if (!email || !password) {
+      setError('Please fill in both email and password.');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    setError('');
+    
+    try {
+      await login(email, password);
+      // The _layout will automatically redirect to /home since isAuthenticated changes
+    } catch (err) {
+      setError(err.message || 'Login failed');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -57,6 +75,8 @@ export default function LoginScreen() {
             Enter your university credentials to access {selectedRole} portal
           </Text>
 
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
           <View style={styles.formGroup}>
             <Text style={styles.label}>University Email / NetID</Text>
             <View style={styles.inputWrap}>
@@ -69,6 +89,7 @@ export default function LoginScreen() {
                 onChangeText={setEmail}
                 autoCapitalize="none"
                 keyboardType="email-address"
+                editable={!isSubmitting}
               />
             </View>
           </View>
@@ -89,17 +110,24 @@ export default function LoginScreen() {
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
+                editable={!isSubmitting}
               />
             </View>
           </View>
 
-          <Button
-            title={`Sign In to ${selectedRole.toUpperCase()}`}
-            icon="arrowRight"
-            variant="primary"
-            onPress={handleLogin}
-            style={{ marginTop: 24 }}
-          />
+          {isSubmitting ? (
+            <View style={{ marginTop: 24, paddingVertical: 14, alignItems: 'center' }}>
+              <ActivityIndicator color={COLORS.primary} />
+            </View>
+          ) : (
+            <Button
+              title={`Sign In to ${selectedRole.toUpperCase()}`}
+              icon="arrowRight"
+              variant="primary"
+              onPress={handleLogin}
+              style={{ marginTop: 24 }}
+            />
+          )}
 
           <View style={styles.registerRow}>
             <Text style={styles.registerText}>Don't have a campus account?</Text>

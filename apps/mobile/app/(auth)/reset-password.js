@@ -8,23 +8,27 @@ import Button from '../../src/components/Button';
 import Header from '../../src/components/Header';
 import { useAuth } from '../../src/context/AuthContext';
 
-export default function ForgotPasswordScreen() {
-  const [email, setEmail] = useState('');
-  const [sent, setSent] = useState(false);
+export default function ResetPasswordScreen() {
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-  const { forgotPassword } = useAuth();
+  const { resetPassword } = useAuth();
 
   const handleReset = async () => {
-    if (!email) return;
+    if (!newPassword || !confirmPassword) return;
     setIsSubmitting(true);
     setError('');
     try {
-      await forgotPassword(email);
-      setSent(true);
+      const res = await resetPassword(newPassword, confirmPassword);
+      setSuccess(res.message);
+      setTimeout(() => {
+        router.push('/login');
+      }, 2000);
     } catch (err) {
-      setError(err.message || 'Failed to send recovery email');
+      setError(err.message || 'Failed to reset password');
     } finally {
       setIsSubmitting(false);
     }
@@ -32,57 +36,64 @@ export default function ForgotPasswordScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Password Recovery" showBack />
+      <Header title="Reset Password" showBack />
 
       <View style={styles.content}>
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Reset Credentials</Text>
+          <Text style={styles.cardTitle}>Set New Password</Text>
           <Text style={styles.cardSubtitle}>
-            Enter your university email address to receive a secure recovery key.
+            Enter your new secure password below
           </Text>
 
-          {sent ? (
+          {success ? (
             <View style={styles.successWrap}>
               <View style={styles.successBadge}>
-                <Icon name="sparkles" size={24} color={COLORS.accentEmerald} />
+                <Icon name="checkCircle" size={24} color={COLORS.accentEmerald} />
               </View>
-              <Text style={styles.successTitle}>Recovery Sent!</Text>
+              <Text style={styles.successTitle}>Password Reset!</Text>
               <Text style={styles.successDesc}>
-                Instructions sent to {email}. Check your inbox.
+                {success} Redirecting to login...
               </Text>
-              <Button
-                title="Back to Sign In"
-                variant="primary"
-                onPress={() => router.push('/(auth)/login')}
-                onPress={() => router.push('/login')}
-                style={{ width: '100%', marginTop: 14 }}
-              />
             </View>
           ) : (
             <View style={styles.formGroup}>
               {error ? <Text style={styles.errorText}>{error}</Text> : null}
-              <Text style={styles.label}>Registered Email / NetID</Text>
+              
+              <Text style={styles.label}>New Password</Text>
               <View style={styles.inputWrap}>
-                <Icon name="profile" size={18} color={COLORS.textDim} />
+                <Icon name="lock" size={18} color={COLORS.textDim} />
                 <TextInput
                   style={styles.input}
-                  placeholder="student@university.edu"
+                  placeholder="Enter new password"
                   placeholderTextColor={COLORS.textDim}
-                  value={email}
-                  onChangeText={setEmail}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
+                  secureTextEntry
+                  value={newPassword}
+                  onChangeText={setNewPassword}
+                  editable={!isSubmitting}
+                />
+              </View>
+
+              <Text style={[styles.label, { marginTop: 16 }]}>Confirm New Password</Text>
+              <View style={styles.inputWrap}>
+                <Icon name="lock" size={18} color={COLORS.textDim} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Re-enter new password"
+                  placeholderTextColor={COLORS.textDim}
+                  secureTextEntry
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
                   editable={!isSubmitting}
                 />
               </View>
 
               {isSubmitting ? (
-                <View style={{ marginTop: 10, paddingVertical: 14, alignItems: 'center' }}>
+                <View style={{ marginTop: 24, paddingVertical: 14, alignItems: 'center' }}>
                   <ActivityIndicator color={COLORS.primary} />
                 </View>
               ) : (
                 <Button
-                  title="Send Recovery Instructions"
+                  title="Reset Password"
                   icon="arrowRight"
                   variant="primary"
                   onPress={handleReset}
@@ -159,7 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   submitBtn: {
-    marginTop: 10,
+    marginTop: 24,
   },
   successWrap: {
     alignItems: 'center',

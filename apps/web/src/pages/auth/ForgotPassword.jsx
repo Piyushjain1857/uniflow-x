@@ -1,14 +1,28 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../../components/Icon';
+import { useAuth } from '../../context/AuthContext';
 
 export function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { forgotPassword } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email) setSubmitted(true);
+    if (!email) return;
+    setIsSubmitting(true);
+    setError('');
+    try {
+      await forgotPassword(email);
+      setSubmitted(true);
+    } catch (err) {
+      setError(err.message || 'Failed to send reset link');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -44,6 +58,7 @@ export function ForgotPassword() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="auth-form">
+            {error && <div className="form-error">{error}</div>}
             <div className="form-group">
               <label className="form-label" htmlFor="email">
                 Registered University Email
@@ -62,8 +77,8 @@ export function ForgotPassword() {
               </div>
             </div>
 
-            <button type="submit" className="btn-primary auth-submit-btn">
-              <span>Send Recovery Code</span>
+            <button type="submit" className="btn-primary auth-submit-btn" disabled={isSubmitting}>
+              <span>{isSubmitting ? 'Sending...' : 'Send Recovery Code'}</span>
               <Icon name="arrowRight" size={18} />
             </button>
           </form>

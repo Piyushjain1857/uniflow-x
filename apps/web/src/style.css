@@ -3992,3 +3992,31 @@ select:focus {
   color: var(--text-muted);
   font-weight: 600;
 }
+
+/* --------------------------------------------------------------------------
+   XX. AUTH FORM UTILITIES
+   -------------------------------------------------------------------------- */
+.form-error {
+  background: var(--danger-bg);
+  border: 1px solid rgba(240, 68, 85, 0.3);
+  color: var(--danger);
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.auth-success-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 24px;
+}
+
+.success-icon-badge {
+  color: var(--success);
+  margin-bottom: 8px;
+}

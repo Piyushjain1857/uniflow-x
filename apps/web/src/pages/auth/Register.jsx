@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Icon from '../../components/Icon';
+import { useAuth } from '../../context/AuthContext';
 import { APP_CONFIG } from '@uniflow-x/constants';
 
 export function Register() {
@@ -8,14 +9,28 @@ export function Register() {
   const [studentId, setStudentId] = useState('');
   const [email, setEmail] = useState('');
   const [department, setDepartment] = useState('Computer Science & Engineering');
+  const [semester, setSemester] = useState('1');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(true);
+  const [error, setError] = useState('');
+  
+  const { register, loading } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    // Non-functional mock registration for Prompt 02
-    navigate('/dashboard');
+    setIsSubmitting(true);
+    setError('');
+    try {
+      await register({ fullName, email, studentId, department, semester, password, confirmPassword });
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message || 'Registration failed');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -30,6 +45,7 @@ export function Register() {
         </div>
 
         <form onSubmit={handleRegister} className="auth-form grid-2-form">
+          {error && <div className="form-error full-width">{error}</div>}
           <div className="form-group">
             <label className="form-label" htmlFor="fullName">
               Full Name
@@ -106,7 +122,26 @@ export function Register() {
             </div>
           </div>
 
-          <div className="form-group full-width">
+          <div className="form-group">
+            <label className="form-label" htmlFor="semester">
+              Current Semester
+            </label>
+            <div className="input-wrap">
+              <Icon name="academics" size={18} className="input-icon" />
+              <select
+                id="semester"
+                className="form-input form-select"
+                value={semester}
+                onChange={(e) => setSemester(e.target.value)}
+              >
+                {[1,2,3,4,5,6,7,8].map(sem => (
+                  <option key={sem} value={sem}>Semester {sem}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="form-group">
             <label className="form-label" htmlFor="password">
               Password Security Key
             </label>
@@ -124,6 +159,24 @@ export function Register() {
             </div>
           </div>
 
+          <div className="form-group">
+            <label className="form-label" htmlFor="confirmPassword">
+              Confirm Password
+            </label>
+            <div className="input-wrap">
+              <Icon name="forgotPassword" size={18} className="input-icon" />
+              <input
+                id="confirmPassword"
+                type="password"
+                required
+                className="form-input"
+                placeholder="Re-enter password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
+          </div>
+
           <div className="form-options full-width">
             <label className="checkbox-label">
               <input
@@ -136,8 +189,8 @@ export function Register() {
             </label>
           </div>
 
-          <button type="submit" className="btn-primary auth-submit-btn full-width">
-            <span>Complete Registration & Open Dashboard</span>
+          <button type="submit" className="btn-primary auth-submit-btn full-width" disabled={isSubmitting}>
+            <span>{isSubmitting ? 'Registering...' : 'Complete Registration & Open Dashboard'}</span>
             <Icon name="arrowRight" size={18} />
           </button>
         </form>
