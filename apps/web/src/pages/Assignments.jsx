@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PageContainer from '../components/PageContainer';
+import Icon from '../components/Icon';
 import { mockData } from '../data/mockData';
 
 export function Assignments() {
@@ -14,46 +15,74 @@ export function Assignments() {
   });
 
   return (
-    <PageContainer className="v2-assignments-page">
-      <div className="v2-page-header">
-        <h1 className="v2-title">Assignments</h1>
-        <p className="v2-subtitle">Coursework tasks and submission deadlines.</p>
+    <PageContainer className="v8-assignments-page">
+      {/* Header */}
+      <div className="v8-page-header">
+        <div>
+          <h1 className="v8-page-title">Assignments</h1>
+          <p className="v8-page-sub">Coursework tasks and submission deadlines.</p>
+        </div>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="v2-filter-tabs">
-        {['Upcoming', 'Submitted', 'Overdue'].map((tab) => (
-          <button
-            key={tab}
-            className={`v2-tab-btn ${filter === tab ? 'active' : ''}`}
-            onClick={() => setFilter(tab)}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
-
-      {/* Dividers List */}
-      <section className="v2-section">
-        <div className="v2-divider-list">
-          {filteredAssignments.map((asg) => (
-            <div key={asg.id} className="v2-divider-row assignment-row">
-              <div className="asg-info-col">
-                <span className="v2-subject-tag">{asg.subject}</span>
-                <h3 className="v2-asg-title">{asg.title}</h3>
-                <span className="v2-asg-date">{asg.dueDate}</span>
-              </div>
-
-              <div className="asg-right-col">
-                <span className="v2-marks-pill">{asg.marks}</span>
-                <span className={`v2-status-tag status-${asg.status.toLowerCase()}`}>
-                  {asg.status}
-                </span>
-              </div>
-            </div>
+      {/* Filter Bar */}
+      <div className="v8-filter-bar">
+        <div className="v8-filter-tabs">
+          {['Upcoming', 'Submitted', 'Overdue'].map((tab) => (
+            <button
+              key={tab}
+              className={`v8-filter-tab ${filter === tab ? 'active' : ''}`}
+              onClick={() => setFilter(tab)}
+            >
+              {tab}
+            </button>
           ))}
         </div>
-      </section>
+        <button className="v8-filter-icon-btn">
+          <Icon name="settings" size={14} /> Filter
+        </button>
+      </div>
+
+      {/* Assignments Table */}
+      <div className="v8-panel">
+        <div className="v8-table-wrap">
+          <table className="v8-mini-table">
+            <thead>
+              <tr>
+                <th>Assignment</th>
+                <th>Subject</th>
+                <th>Due Date</th>
+                <th>Memo</th>
+                <th>Marks</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredAssignments.map((asg) => (
+                <tr key={asg.id}>
+                  <td className="v8-cell-bold">{asg.title}</td>
+                  <td>{asg.subject}</td>
+                  <td>{asg.dueDate}</td>
+                  <td>—</td>
+                  <td>{asg.marks}</td>
+                  <td>
+                    <span className={`v8-status-badge v8-status-${asg.status.toLowerCase()}`}>
+                      {asg.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {filteredAssignments.length === 0 && (
+          <div className="v8-empty-state">
+            <p>No {filter.toLowerCase()} assignments found.</p>
+          </div>
+        )}
+        <div className="v8-table-footer">
+          <span className="v8-table-count">Showing {filteredAssignments.length} of {assignmentsList.length} total</span>
+        </div>
+      </div>
     </PageContainer>
   );
 }

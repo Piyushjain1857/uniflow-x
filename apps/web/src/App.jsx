@@ -23,6 +23,7 @@ import CampusMap from './pages/CampusMap';
 import UniAI from './pages/UniAI';
 import Notifications from './pages/Notifications';
 import PlaceholderPage from './pages/PlaceholderPage';
+import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
 import DesignSystemShowcase from './pages/DesignSystemShowcase';
 
@@ -61,7 +62,7 @@ function App() {
             <Route path="digital-id" element={<PlaceholderPage routePath="/digital-id" />} />
             <Route path="notifications" element={<Notifications />} />
             <Route path="profile" element={<PlaceholderPage routePath="/profile" />} />
-            <Route path="settings" element={<PlaceholderPage routePath="/settings" />} />
+            <Route path="settings" element={<Settings />} />
             
             <Route path="faculty" element={<PlaceholderPage routePath="/faculty" />} />
             <Route path="admin" element={<PlaceholderPage routePath="/admin" />} />

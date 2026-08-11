@@ -6,7 +6,6 @@ import {
   Select,
   Checkbox,
   Switch,
-  Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter,
   Badge,
   Avatar,
   Modal,
@@ -30,7 +29,8 @@ export function DesignSystemShowcase() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [switchChecked, setSwitchChecked] = useState(true);
   const [checkboxChecked, setCheckboxChecked] = useState(true);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState('netid@university.edu');
+  const [focusedInputValue, setFocusedInputValue] = useState('Type something...');
   const [selectValue, setSelectValue] = useState('cs');
   const { addToast } = useToast();
 
@@ -70,17 +70,27 @@ export function DesignSystemShowcase() {
     { title: 'System Security Audit Passed', timestamp: '02:00 PM', description: 'Zero high severity vulnerabilities found.' },
   ];
 
+  const colorTokens = [
+    { name: 'Primary Accent', hex: '#6366F1', varName: '--accent' },
+    { name: 'Background', hex: '#0B0D12', varName: '--bg' },
+    { name: 'Surface Card', hex: '#11141C', varName: '--surface' },
+    { name: 'Surface Secondary', hex: '#151923', varName: '--surface-2' },
+    { name: 'Success Green', hex: '#2DD4A3', varName: '--success' },
+    { name: 'Warning Amber', hex: '#F5B942', varName: '--warning' },
+    { name: 'Danger Red', hex: '#F04455', varName: '--danger' },
+  ];
+
   return (
-    <div className="showcase-page" style={{ padding: '48px 48px 96px', maxWidth: '1400px', margin: '0 auto' }}>
-      {/* Header & Theme Control */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+    <div className="showcase-page" style={{ padding: '44px 48px 96px', maxWidth: '1440px', margin: '0 auto' }}>
+      {/* Header & Theme Switcher */}
+      <div className="v8-page-header">
         <div>
           <Badge variant="primary" size="md">Design Tokens & Component Kit</Badge>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 900, marginTop: '0.6rem', letterSpacing: '-0.035em' }}>
+          <h1 className="v8-page-title" style={{ fontSize: '2.4rem', marginTop: '0.6rem' }}>
             UniFlow X Web Design System
           </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', marginTop: '4px' }}>
-            24 Reusable, Accessible, Keyboard-Friendly React UI Components
+          <p className="v8-page-sub">
+            UI components, accessibility patterns, and design tokens for university operations.
           </p>
         </div>
 
@@ -93,7 +103,7 @@ export function DesignSystemShowcase() {
         </div>
       </div>
 
-      {/* Main Category Tabs */}
+      {/* Main Category Filter Tabs */}
       <Tabs
         variant="pill"
         activeTab={activeTab}
@@ -107,13 +117,62 @@ export function DesignSystemShowcase() {
         style={{ marginBottom: '2.5rem' }}
       />
 
+      {/* 0. Color Tokens & Swatches */}
+      {(activeTab === 'overview') && (
+        <section className="v8-section">
+          <div className="v8-section-header">
+            <h3 className="v8-section-label">DESIGN SYSTEM TOKENS</h3>
+          </div>
+          <div className="v8-panel" style={{ padding: '24px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '16px' }}>
+              {colorTokens.map((token) => (
+                <div
+                  key={token.name}
+                  style={{
+                    background: 'var(--surface-2)',
+                    border: '1px solid var(--border-strong)',
+                    borderRadius: '12px',
+                    padding: '14px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                  }}
+                >
+                  <div
+                    style={{
+                      height: '48px',
+                      borderRadius: '8px',
+                      background: `var(${token.varName})`,
+                      border: '1px solid rgba(255,255,255,0.1)',
+                    }}
+                  />
+                  <div>
+                    <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--text)', display: 'block' }}>
+                      {token.name}
+                    </span>
+                    <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontFamily: 'monospace' }}>
+                      {token.varName}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* 1. Buttons & Badges */}
       {(activeTab === 'overview' || activeTab === 'forms') && (
-        <section style={{ marginBottom: '3.5rem' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text)' }}>1. Buttons & Badges</h2>
-          <Card>
-            <CardContent style={{ display: 'flex', flexDirection: 'column', gap: '2rem', padding: '8px' }}>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+        <section className="v8-section">
+          <div className="v8-section-header">
+            <h3 className="v8-section-label">1. BUTTONS, BADGES & AVATARS</h3>
+          </div>
+          <div className="v8-panel">
+            <div className="v8-panel-header">
+              <h3 className="v8-panel-title">Interactive Button States & Variants</h3>
+            </div>
+            <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
                 <Button variant="primary" icon="sparkles">Primary Button</Button>
                 <Button variant="secondary">Secondary</Button>
                 <Button variant="outline">Outline</Button>
@@ -124,7 +183,7 @@ export function DesignSystemShowcase() {
                 <Button variant="primary" isDisabled>Disabled</Button>
               </div>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem', alignItems: 'center' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
                 <Badge variant="primary" hasDot>Primary Badge</Badge>
                 <Badge variant="secondary">Secondary</Badge>
                 <Badge variant="success" hasDot>Success</Badge>
@@ -133,34 +192,48 @@ export function DesignSystemShowcase() {
                 <Badge variant="info">Info Badge</Badge>
               </div>
 
-              <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                 <Avatar name="Alex Vance" size="sm" status="online" />
                 <Avatar name="Sarah Jenkins" size="md" status="online" />
                 <Avatar name="Mark Davis" size="lg" status="away" />
                 <Avatar name="Turing" size="xl" status="busy" />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </section>
       )}
 
       {/* 2. Inputs & Form Controls */}
       {(activeTab === 'overview' || activeTab === 'forms') && (
-        <section style={{ marginBottom: '3.5rem' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text)' }}>2. Form Controls & Inputs</h2>
-          <Card>
-            <CardContent style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', padding: '8px' }}>
+        <section className="v8-section">
+          <div className="v8-section-header">
+            <h3 className="v8-section-label">2. FORM CONTROLS & INPUTS</h3>
+          </div>
+          <div className="v8-panel">
+            <div className="v8-panel-header">
+              <h3 className="v8-panel-title">Form Input Fields, Toggles & Checkboxes</h3>
+            </div>
+            <div style={{ padding: '24px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
               <Input
-                label="University Email"
-                placeholder="netid@university.edu"
+                label="Default Input"
+                placeholder="Type something..."
                 startIcon="profile"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 helperText="Enter your official campus ID"
               />
 
+              <Input
+                label="Focused State Input"
+                placeholder="Type something..."
+                startIcon="search"
+                value={focusedInputValue}
+                onChange={(e) => setFocusedInputValue(e.target.value)}
+                helperText="Active input state demo"
+              />
+
               <Select
-                label="Department"
+                label="Department Select"
                 value={selectValue}
                 onChange={(e) => setSelectValue(e.target.value)}
                 startIcon="academics"
@@ -192,17 +265,22 @@ export function DesignSystemShowcase() {
                   maxLength={200}
                 />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </section>
       )}
 
       {/* 3. Overlays & Dialogs */}
       {(activeTab === 'overview' || activeTab === 'overlays') && (
-        <section style={{ marginBottom: '3.5rem' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text)' }}>3. Overlays, Dialogs & Popovers</h2>
-          <Card>
-            <CardContent style={{ display: 'flex', flexWrap: 'wrap', gap: '1.25rem', padding: '8px' }}>
+        <section className="v8-section">
+          <div className="v8-section-header">
+            <h3 className="v8-section-label">3. OVERLAYS, DIALOGS & TOASTS</h3>
+          </div>
+          <div className="v8-panel">
+            <div className="v8-panel-header">
+              <h3 className="v8-panel-title">Modals, Drawers, Dropdowns & Tooltips</h3>
+            </div>
+            <div style={{ padding: '24px', display: 'flex', flexWrap: 'wrap', gap: '14px' }}>
               <Button variant="primary" onClick={() => setIsModalOpen(true)}>
                 Open Modal Dialog
               </Button>
@@ -232,8 +310,8 @@ export function DesignSystemShowcase() {
               >
                 Trigger Success Toast
               </Button>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </section>
       )}
 
@@ -271,9 +349,11 @@ export function DesignSystemShowcase() {
 
       {/* 4. Feedback & States */}
       {(activeTab === 'overview' || activeTab === 'data') && (
-        <section style={{ marginBottom: '3.5rem' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text)' }}>4. Feedback & State Components</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
+        <section className="v8-section">
+          <div className="v8-section-header">
+            <h3 className="v8-section-label">4. FEEDBACK & STATE COMPONENTS</h3>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px', marginBottom: '20px' }}>
             <Alert variant="info" title="System Announcement">
               Fall 2026 course registration closes on Friday.
             </Alert>
@@ -282,48 +362,53 @@ export function DesignSystemShowcase() {
             </Alert>
           </div>
 
-          <Card style={{ marginTop: '1.5rem' }}>
-            <CardContent style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', padding: '8px' }}>
+          <div className="v8-panel">
+            <div className="v8-panel-header">
+              <h3 className="v8-panel-title">Progress Bars & Loading Skeletons</h3>
+            </div>
+            <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <Progress value={75} max={100} label="Semester Progress" showValue variant="primary" />
               <Progress value={92} max={100} label="Attendance Threshold" showValue variant="success" />
 
-              <div style={{ marginTop: '1rem' }}>
+              <div style={{ marginTop: '8px' }}>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', fontWeight: 700 }}>Loading Skeletons:</p>
                 <Skeleton variant="text" width="60%" />
-                <Skeleton variant="rect" height="60px" style={{ marginTop: '6px' }} />
+                <Skeleton variant="rect" height="60px" style={{ marginTop: '8px' }} />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </section>
       )}
 
       {/* 5. Data & Analytics */}
       {(activeTab === 'overview' || activeTab === 'data') && (
-        <section style={{ marginBottom: '3.5rem' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, marginBottom: '1.25rem', color: 'var(--text)' }}>5. Analytics & Data Tables</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
+        <section className="v8-section">
+          <div className="v8-section-header">
+            <h3 className="v8-section-label">5. ANALYTICS & DATA TABLES</h3>
+          </div>
+          <div className="v8-stat-row" style={{ marginBottom: '24px' }}>
             <StatCard label="Total Enrolled" value="15,420" change="+4.2% vs last term" changeType="positive" icon="profile" color="primary" />
             <StatCard label="Attendance Rate" value="92.4%" change="Safe Status" changeType="positive" icon="attendance" color="emerald" />
             <StatCard label="Open Tickets" value="12 Tasks" change="-3 resolved today" changeType="positive" icon="complaints" color="amber" />
           </div>
 
-          <Card style={{ marginBottom: '1.5rem' }}>
-            <CardHeader>
-              <CardTitle>Activity Timeline</CardTitle>
-            </CardHeader>
-            <CardContent>
+          <div className="v8-panel" style={{ marginBottom: '24px' }}>
+            <div className="v8-panel-header">
+              <h3 className="v8-panel-title">Activity Timeline</h3>
+            </div>
+            <div style={{ padding: '20px' }}>
               <Timeline items={timelineItems} />
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Department Roster Data Table</CardTitle>
-            </CardHeader>
-            <CardContent>
+          <div className="v8-panel">
+            <div className="v8-panel-header">
+              <h3 className="v8-panel-title">Department Roster Data Table</h3>
+            </div>
+            <div style={{ padding: '16px' }}>
               <DataTable columns={columns} data={sampleData} pageSize={3} />
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </section>
       )}
     </div>

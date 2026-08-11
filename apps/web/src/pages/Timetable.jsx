@@ -1,88 +1,82 @@
 import React, { useState } from 'react';
 import PageContainer from '../components/PageContainer';
 import Icon from '../components/Icon';
-
-const timetableData = {
-  Monday: [
-    { time: '09:00 AM - 10:30 AM', subject: 'CS401 Distributed Systems', room: 'Room 304B', faculty: 'Prof. Mark Davis', status: 'Lecture' },
-    { time: '11:30 AM - 01:00 PM', subject: 'CS402 AI & Neural Networks', room: 'Lab 2 (Tech Block)', faculty: 'Dr. Sarah Jenkins', status: 'Lab Session' },
-    { time: '02:15 PM - 03:45 PM', subject: 'Math301 Advanced Calculus', room: 'Auditorium C', faculty: 'Prof. Alan Turing', status: 'Lecture' },
-  ],
-  Tuesday: [
-    { time: '10:00 AM - 11:30 AM', subject: 'CS405 Cloud Native Infrastructure', room: 'Lab 4', faculty: 'Prof. Mark Davis', status: 'Lab Session' },
-    { time: '01:30 PM - 03:00 PM', subject: 'CS401 Distributed Systems', room: 'Room 304B', faculty: 'Prof. Mark Davis', status: 'Lecture' },
-  ],
-  Wednesday: [
-    { time: '09:00 AM - 10:30 AM', subject: 'CS402 AI & Neural Networks', room: 'Room 201', faculty: 'Dr. Sarah Jenkins', status: 'Lecture' },
-    { time: '11:00 AM - 12:30 PM', subject: 'Math301 Advanced Calculus', room: 'Auditorium C', faculty: 'Prof. Alan Turing', status: 'Lecture' },
-  ],
-  Thursday: [
-    { time: '10:00 AM - 12:00 PM', subject: 'CS405 Cloud Systems Lab', room: 'Lab 4', faculty: 'Prof. Mark Davis', status: 'Lab Session' },
-    { time: '02:00 PM - 03:30 PM', subject: 'CS402 AI & Neural Networks', room: 'Room 201', faculty: 'Dr. Sarah Jenkins', status: 'Lecture' },
-  ],
-  Friday: [
-    { time: '09:30 AM - 11:00 AM', subject: 'Math301 Advanced Calculus', room: 'Auditorium C', faculty: 'Prof. Alan Turing', status: 'Lecture' },
-    { time: '02:00 PM - 04:00 PM', subject: 'Student Research Seminar', room: 'Main Auditorium', faculty: 'Guest Speaker Series', status: 'Seminar' },
-  ]
-};
+import { mockData } from '../data/mockData';
 
 export function Timetable() {
-  const [activeDay, setActiveDay] = useState('Monday');
+  const { timetableWeek } = mockData;
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  const [activeDay, setActiveDay] = useState('Monday');
+  const [viewMode, setViewMode] = useState('Day');
+
+  const slots = timetableWeek[activeDay] || [];
 
   return (
-    <PageContainer className="v2-timetable-page">
-      <div className="page-header">
+    <PageContainer className="v8-timetable-page">
+      {/* Header */}
+      <div className="v8-page-header">
         <div>
-          <h1>Weekly Timetable</h1>
-          <p>Interactive schedule, room locations, and faculty roster.</p>
+          <h1 className="v8-page-title">Timetable</h1>
+          <p className="v8-page-sub">{activeDay} — 10 August</p>
         </div>
       </div>
 
-      {/* Day Filter Bar */}
-      <div className="notif-filter-bar" style={{ marginBottom: '28px' }}>
-        <div className="notif-filter-tabs">
+      {/* Date Navigation Bar */}
+      <div className="v8-timetable-nav">
+        <div className="v8-date-nav-left">
+          <button className="v8-nav-arrow" onClick={() => {
+            const idx = days.indexOf(activeDay);
+            if (idx > 0) setActiveDay(days[idx - 1]);
+          }}>←</button>
+          <span className="v8-date-range">Aug 10 - Aug 16</span>
+          <button className="v8-nav-arrow" onClick={() => {
+            const idx = days.indexOf(activeDay);
+            if (idx < days.length - 1) setActiveDay(days[idx + 1]);
+          }}>→</button>
+        </div>
+
+        <div className="v8-day-tabs">
           {days.map((day) => (
             <button
               key={day}
-              className={`notif-tab-btn ${activeDay === day ? 'active' : ''}`}
+              className={`v8-day-tab ${activeDay === day ? 'active' : ''}`}
               onClick={() => setActiveDay(day)}
             >
-              {day}
+              {day.slice(0, 3)}
+            </button>
+          ))}
+        </div>
+
+        <div className="v8-view-toggle">
+          {['Week', 'Day'].map((mode) => (
+            <button
+              key={mode}
+              className={`v8-view-btn ${viewMode === mode ? 'active' : ''}`}
+              onClick={() => setViewMode(mode)}
+            >
+              {mode}
             </button>
           ))}
         </div>
       </div>
 
-      {/* TIMETABLE SLOTS */}
-      <section className="section">
-        <div className="v2-divider-list">
-          {timetableData[activeDay]?.map((slot, idx) => (
-            <div key={idx} className="v2-divider-row" style={{ padding: '20px 0' }}>
-              <div style={{ minWidth: '160px' }}>
-                <span style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--accent)' }}>
-                  {slot.time}
-                </span>
-                <div style={{ marginTop: '4px' }}>
-                  <span className="badge badge-secondary">{slot.status}</span>
-                </div>
-              </div>
-
-              <div style={{ flex: 1, paddingLeft: '16px' }}>
-                <h4 style={{ fontSize: '1.05rem', fontWeight: 800 }}>{slot.subject}</h4>
-                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                  {slot.faculty} · <Icon name="campusMap" size={13} /> {slot.room}
-                </p>
-              </div>
-
-              <div>
-                <button className="btn btn-outline sm-btn">
-                  View Room Map
-                </button>
-              </div>
+      {/* Schedule Slots */}
+      <section className="v8-timetable-slots">
+        {slots.map((slot, idx) => (
+          <div key={idx} className="v8-timetable-slot" style={{ borderLeftColor: slot.color }}>
+            <div className="v8-slot-time-col">
+              <span className="v8-slot-time">{slot.time}</span>
             </div>
-          ))}
-        </div>
+            <div className="v8-slot-card" style={{ borderLeftColor: slot.color }}>
+              <div className="v8-slot-card-top">
+                <h4 className="v8-slot-subject">{slot.subject} ({slot.code})</h4>
+                {slot.tag && <span className="v8-slot-tag">{slot.tag}</span>}
+              </div>
+              <p className="v8-slot-meta">{slot.room} · {slot.faculty}</p>
+              <span className="v8-slot-duration">{slot.duration}</span>
+            </div>
+          </div>
+        ))}
       </section>
     </PageContainer>
   );
